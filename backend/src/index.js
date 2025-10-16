@@ -1,5 +1,7 @@
 import express from 'express';
 import http from 'http';
+import  sequelize  from './data/dbConfig.js'; // test
+await sequelize.sync(); // test
 
 const app = express();
 const httpServer = http.createServer(app);
