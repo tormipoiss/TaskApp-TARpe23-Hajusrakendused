@@ -2,6 +2,8 @@ import express from 'express';
 import http from 'http';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from './docs/swagger.json' with { type: 'json' };
+import  sequelize  from './data/dbConfig.js'; // test
+await sequelize.sync(); // test
 
 const app = express();
 const httpServer = http.createServer(app);
