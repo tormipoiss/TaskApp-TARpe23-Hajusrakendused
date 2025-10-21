@@ -1,8 +1,18 @@
-The project can be started by executin these commands in the root folder in terminal "npm install" and then "npm start"
+Hajusrakenduste projekt:
 
-The project members are:
+Taskapp projekt, kus on CRUD operatsioonid ülesannete (taskide) jaoks.
+
+Tegijad:
 Tormi Laane
 Mel Kosk
 
-The teacher is:
-Kristjan Kivikangur
+Õpetaja: Kristjan Kivikangur
+
+## Keskkonna seadistamine
+
+## Projekti käivitamine
+
+Peale kloonimist minna kloonitud kausta ja käivitada käsk:
+"npm install"
+Projekti käivitamiseks anda käsk:
+"npm start"
