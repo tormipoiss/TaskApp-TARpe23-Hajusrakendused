@@ -6,7 +6,7 @@ dotenv.config();
 
 // Determine if we're in test mode
 const isTest = process.env.NODE_ENV === 'test';
-const dbName = process.env.DB_NAME
+console.log("isTest:",isTest)
 
 // Create the appropriate Sequelize instance based on the environment
 const sequelize = isTest
@@ -17,8 +17,26 @@ const sequelize = isTest
     })
   : new Sequelize({
       dialect: 'sqlite',
-      storage: `./${dbName}`, // Use file-based SQLite for production
+      storage: `./${process.env.DB_FILE}`, // Use file-based SQLite for production
       logging: false
     });
 
-export default sequelize;
+(async () => {
+  try {
+    await sequelize.authenticate();
+    console.log("Database connection has been established.");
+  } catch (error) {
+    console.log("Unable to connect to the database:", error);
+  }
+})();
+
+const db = {};
+db.Sequelize = Sequelize;
+db.sequelize = sequelize;
+
+const sync = (async () => {
+  await sequelize.sync({ alter: true });
+  console.log("All models were synchonized.");
+})
+
+export { sequelize, sync };
