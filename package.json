@@ -9,8 +9,11 @@
   "devDependencies": {
     "concurrently": "^8.2.2"
   },
-  "subPackages":[
+  "subPackages": [
     "backend",
     "frontend"
-  ]
+  ],
+  "dependencies": {
+    "swagger-ui-express": "^5.0.1"
+  }
 }
