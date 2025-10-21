@@ -20,3 +20,6 @@ Peale kloonimist minna kloonitud kausta ja käivitada käsk:
 "npm install"
 Projekti käivitamiseks anda käsk:
 "npm start"
+
+Projekt töötab ja kuvab veebilehed, millelt saab lehte külastada.
+Lõpetamiseks vajuta klahve CTRL+C
