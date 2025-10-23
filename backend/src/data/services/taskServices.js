@@ -5,7 +5,7 @@ export const taskService = {
         await Tasks.create({username,title,description})
     },
     getAllTasks: async(username)=>{
-        const tasks = await Tasks.findAll({where:{username}, attributes: ['id', 'username', 'title', 'description']})
+        const tasks = await Tasks.findAll({where:{username}, attributes: ['id', 'title']})
         return tasks ? tasks: [];
     }
 }
