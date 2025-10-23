@@ -23,18 +23,25 @@ const Tasks = sequelize.define(
     description: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    deadline: {
+      type: DataTypes.DATE,
+      allowNull: true
     }
   },
 );
 
-console.log("SYNC", process.env.DB_SYNC === "true")
-console.log("SEED", process.env.DB_SEED === "true")
 if (process.env.DB_SYNC === "true") {
   await sequelize.sync();
   if (process.env.DB_SEED === "true") {
     await Tasks.findOrCreate ({
       where: { username: "Tiit" },
-      defaults: { username: "Tiit", title:"asdas", description:"asdsadasasdasdas" },
+      defaults: { 
+        username: "Tiit",
+        title:"asdas",
+        description:"asdsadasasdasdas",
+        deadline: new Date("2025-11-18T00:00:00.000Z"),
+      },
     });
   }
 }

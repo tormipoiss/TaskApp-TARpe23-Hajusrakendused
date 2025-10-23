@@ -18,6 +18,18 @@ app.get('/', async (req, res) => {
     res.status(200).type('text/plain').send(`Hello, ${user.username}!`);
 });
 
+app.get('/api/v1/tasks/:id', async (req, res) => {
+    //const user = await userService.getUser("Tiit");
+    if (!req.params.id) {
+        return res.status(400).send({ error: "URL does not contain ID" });
+    }
+    const task = await taskService.getTask(req.params.id);
+    if (!task) {
+        return res.status(404).send({ error: "Task not found" });
+    }
+    return res.json(task);
+});
+
 app.get('/api/v1/tasks', async (req, res) => {
     //const user = await userService.getUser("Tiit");
     const tasks = await taskService.getAllTasks("Tiit");
