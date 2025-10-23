@@ -17,6 +17,12 @@ app.get('/', async (req, res) => {
     res.status(200).type('text/plain').send(`Hello, ${user.username}!`);
 });
 
+app.get('/api/v1/tasks', async (req, res) => {
+    const user = await userService.getUser("Tiit");
+    // const tasks = await taskService.getTasks();
+    res.status(200).type('text/plain').send(`Hello, ${user.username}!\nHere are your tasks: steal a car!`);
+});
+
 const PORT = process.env.PORT;
 
 httpServer.listen(PORT, async () => {
