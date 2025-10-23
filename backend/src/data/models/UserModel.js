@@ -1,4 +1,4 @@
-import { sequelize } from './dbConfig.js';
+import { sequelize } from '../dbConfig.js';
 import { DataTypes } from 'sequelize';
 
 const Users = sequelize.define(
