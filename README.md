@@ -16,6 +16,10 @@ Projektihalduslink: https://trello.com/invite/b/68f0a812968004ea9423e498/ATTI4d0
 
 ## Projekti käivitamine
 
+Mine kausta backend ja nimeta ümber .env.example -> .env
+
+Siis täida .env fail sobivate andmetega
+
 Peale kloonimist minna kloonitud kausta ja käivitada käsk:
 "npm install"
 Projekti käivitamiseks anda käsk:
