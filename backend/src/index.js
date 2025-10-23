@@ -29,8 +29,8 @@ const PORT = process.env.PORT;
 httpServer.listen(PORT, async () => {
     await sync()
     await userService.createUser("Tiit", "pass");
-    await taskService.createTask("Tiit","Test Task","Test task description")
-    await taskService.createTask("Tiit","Test Task","Test task description")
+    // await taskService.createTask("Tiit","Test Task","Test task description")
+    // await taskService.createTask("Tiit","Test Task","Test task description")
     console.log(`Server is running at ${process.env.SERVER_URL}:${PORT}/`);
 });
 

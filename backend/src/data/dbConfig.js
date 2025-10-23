@@ -2,8 +2,6 @@ import { Sequelize } from 'sequelize';
 import dotenv from 'dotenv';
 dotenv.config();
 
-
-
 // Determine if we're in test mode
 const isTest = process.env.NODE_ENV === 'test';
 console.log("isTest:",isTest)
@@ -29,10 +27,6 @@ const sequelize = isTest
     console.log("Unable to connect to the database:", error);
   }
 })();
-
-const db = {};
-db.Sequelize = Sequelize;
-db.sequelize = sequelize;
 
 const sync = (async () => {
   await sequelize.sync({ alter: true });
