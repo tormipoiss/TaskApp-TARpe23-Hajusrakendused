@@ -12,8 +12,6 @@ Projektihalduslink: https://trello.com/invite/b/68f0a812968004ea9423e498/ATTI4d0
 
 ## Keskkonna seadistamine
 
-.env ?
-
 ## Projekti käivitamine
 
 Mine kausta backend ja nimeta ümber .env.example -> .env
