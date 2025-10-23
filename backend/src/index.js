@@ -4,7 +4,8 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from './docs/swagger.json' with { type: 'json' };
 // import  sequelize  from './data/dbConfig.js'; // test
 import { sync } from './data/dbConfig.js';
-import { taskService, userService } from './data/dataServices.js';
+import { taskService } from './data/services/taskServices.js';
+import { userService } from './data/services/userServices.js';
 // await sequelize.sync(); // test
 import dotenv from 'dotenv';
 dotenv.config();
