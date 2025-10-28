@@ -1,4 +1,5 @@
 {
+    "swagger": "2.0",
     "info": {
         "title": "Tasks API",
         "version": "1.0",
@@ -7,40 +8,272 @@
     "basePath": "/api/v1",
     "paths": {
         "/tasks": {
-            "summary": "Tasks object endpoint",
-            "description": "Get, Create, Update or Delete Tasks object",
             "get": {
+                "produces": [
+                    "application/json"
+                ],
                 "tags": [
                     "Tasks"
                 ],
                 "responses": {
                     "200": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "string"
-                                    }
-                                },
-                                "examples": {
-                                    "List of tasks": {
-                                        "value": [
-                                            {
-                                                "id": 1,
-                                                "title": "taskname"
-                                            }
-                                        ]
-                                    }
-                                }
-                            }
+                        "description": "Return list of all Tasks",
+                        "schema": {
+                            "$ref": "#/definitions/TaskListItem"
                         },
-                        "description": "Return list of all Tasks"
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "id": 95,
+                                    "title": "some text"
+                                },
+                                {
+                                    "id": 24,
+                                    "title": "some text"
+                                }
+                            ]
+                        }
                     }
                 },
                 "summary": "Get all tasks"
+            },
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tasks"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "description": "Task to be created - without ID",
+                        "schema": {
+                            "$ref": "#/definitions/NewTask"
+                        },
+                        "in": "body",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created task",
+                        "schema": {
+                            "$ref": "#/definitions/Task"
+                        },
+                        "examples": {
+                            "application/json": {
+                                "id": 94,
+                                "username": "some text",
+                                "title": "some text",
+                                "description": "some text",
+                                "deadline": "2018-02-10T09:30Z"
+                            }
+                        }
+                    }
+                }
             }
+        },
+        "/tasks/{id}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tasks"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Return the requested Task details",
+                        "schema": {
+                            "$ref": "#/definitions/Task"
+                        },
+                        "examples": {
+                            "application/json": {
+                                "id": 36,
+                                "username": "some text",
+                                "title": "some text",
+                                "description": "some text",
+                                "deadline": "2018-02-10T09:30Z"
+                            }
+                        }
+                    }
+                },
+                "summary": "Get a task"
+            },
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tasks"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "description": "Task with data to be updated",
+                        "schema": {
+                            "$ref": "#/definitions/Task"
+                        },
+                        "in": "body",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Task updated",
+                        "schema": {
+                            "$ref": "#/definitions/Task"
+                        },
+                        "examples": {}
+                    }
+                },
+                "summary": "Update task with given values"
+            },
+            "delete": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tasks"
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Task deleted"
+                    },
+                    "404": {
+                        "description": "Task not found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        },
+                        "examples": {
+                            "application/json": {
+                                "error": "Task not found"
+                            }
+                        }
+                    }
+                },
+                "summary": "Delete a task"
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "type": "number"
+                }
+            ]
         }
     },
-    "swagger": "2.0"
+    "definitions": {
+        "TaskListItem": {
+            "title": "Root Type for TaskListItem",
+            "description": "",
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/TaskListItem"
+            },
+            "example": [
+                {
+                    "id": 1,
+                    "title": "Task"
+                },
+                {
+                    "id": 2,
+                    "title": "Task-2"
+                }
+            ]
+        },
+        "Task": {
+            "title": "Root Type for Task",
+            "description": "",
+            "required": [
+                "description",
+                "id",
+                "title",
+                "username"
+            ],
+            "type": "object",
+            "properties": {
+                "id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "username": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "deadline": {
+                    "format": "date-time",
+                    "type": "string"
+                }
+            },
+            "example": {
+                "id": 1,
+                "username": "Tiit",
+                "title": "Task",
+                "description": "Uus hea task",
+                "deadline": "2025-11-18T00:00:00.000Z"
+            }
+        },
+        "Error": {
+            "title": "Root Type for Error",
+            "description": "",
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                }
+            },
+            "example": {
+                "error": "Error message"
+            }
+        },
+        "NewTask": {
+            "title": "Root Type for Task",
+            "description": "",
+            "required": [
+                "username",
+                "title",
+                "description"
+            ],
+            "type": "object",
+            "properties": {
+                "username": {
+                    "description": "",
+                    "type": "string"
+                },
+                "title": {
+                    "description": "",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "",
+                    "type": "string"
+                },
+                "deadline": {
+                    "format": "date-time",
+                    "description": "",
+                    "type": "string"
+                }
+            },
+            "example": {
+                "username": "Tiit",
+                "title": "Task",
+                "description": "Uus hea task",
+                "deadline": "2025-11-18T00:00:00.000Z"
+            }
+        }
+    }
 }
