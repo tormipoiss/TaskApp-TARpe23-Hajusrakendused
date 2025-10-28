@@ -13,6 +13,8 @@ dotenv.config();
 const app = express();
 const httpServer = http.createServer(app);
 
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+
 app.get('/', async (req, res) => {
     const user = await userService.getUser("Tiit");
     res.status(200).type('text/plain').send(`Hello, ${user.username}!`);
@@ -45,7 +47,5 @@ httpServer.listen(PORT, async () => {
     // await taskService.createTask("Tiit","Test Task","Test task description")
     console.log(`Server is running at ${process.env.SERVER_URL}:${PORT}/`);
 });
-
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 export { httpServer, app };
