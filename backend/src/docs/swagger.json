@@ -19,16 +19,19 @@
                     "200": {
                         "description": "Return list of all Tasks",
                         "schema": {
-                            "$ref": "#/definitions/TaskListItem"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/TaskListItem"
+                            }
                         },
                         "examples": {
                             "application/json": [
                                 {
-                                    "id": 95,
+                                    "id": 35,
                                     "title": "some text"
                                 },
                                 {
-                                    "id": 24,
+                                    "id": 43,
                                     "title": "some text"
                                 }
                             ]
@@ -73,8 +76,20 @@
                                 "deadline": "2018-02-10T09:30Z"
                             }
                         }
+                    },
+                    "400": {
+                        "description": "Bad task data",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        },
+                        "examples": {
+                            "application/json": {
+                                "error": "Bad task data"
+                            }
+                        }
                     }
-                }
+                },
+                "summary": "Create a task"
             }
         },
         "/tasks/{id}": {
@@ -98,6 +113,28 @@
                                 "title": "some text",
                                 "description": "some text",
                                 "deadline": "2018-02-10T09:30Z"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Url does not contain ID",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        },
+                        "examples": {
+                            "application/json": {
+                                "error": "URL does not contain ID"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Task not found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        },
+                        "examples": {
+                            "application/json": {
+                                "error": "Task not found"
                             }
                         }
                     }
@@ -132,6 +169,28 @@
                             "$ref": "#/definitions/Task"
                         },
                         "examples": {}
+                    },
+                    "400": {
+                        "description": "URL does not contain ID or bad task data",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        },
+                        "examples": {
+                            "application/json": {
+                                "error": "URL does not contain ID"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Task not found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        },
+                        "examples": {
+                            "application/json": {
+                                "error": "Task not found"
+                            }
+                        }
                     }
                 },
                 "summary": "Update task with given values"
@@ -146,6 +205,17 @@
                 "responses": {
                     "204": {
                         "description": "Task deleted"
+                    },
+                    "400": {
+                        "description": "URL does not contain ID",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        },
+                        "examples": {
+                            "application/json": {
+                                "error": "URL does not contain ID"
+                            }
+                        }
                     },
                     "404": {
                         "description": "Task not found",
@@ -172,24 +242,6 @@
         }
     },
     "definitions": {
-        "TaskListItem": {
-            "title": "Root Type for TaskListItem",
-            "description": "",
-            "type": "array",
-            "items": {
-                "$ref": "#/definitions/TaskListItem"
-            },
-            "example": [
-                {
-                    "id": 1,
-                    "title": "Task"
-                },
-                {
-                    "id": 2,
-                    "title": "Task-2"
-                }
-            ]
-        },
         "Task": {
             "title": "Root Type for Task",
             "description": "",
@@ -230,6 +282,9 @@
         "Error": {
             "title": "Root Type for Error",
             "description": "",
+            "required": [
+                "error"
+            ],
             "type": "object",
             "properties": {
                 "error": {
@@ -273,6 +328,28 @@
                 "title": "Task",
                 "description": "Uus hea task",
                 "deadline": "2025-11-18T00:00:00.000Z"
+            }
+        },
+        "TaskListItem": {
+            "title": "Root Type for TaskListItem",
+            "description": "",
+            "required": [
+                "id",
+                "title"
+            ],
+            "type": "object",
+            "properties": {
+                "id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "example": {
+                "id": 1,
+                "title": "Task"
             }
         }
     }
