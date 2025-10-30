@@ -8,6 +8,7 @@ import { taskService } from './data/services/taskServices.js';
 import { userService } from './data/services/userServices.js';
 // await sequelize.sync(); // test
 import dotenv from 'dotenv';
+import { error } from 'console';
 import { DATE } from 'sequelize';
 dotenv.config();
 
@@ -20,6 +21,17 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 app.get('/', async (req, res) => {
     const user = await userService.getUser("Tiit");
     res.status(200).type('text/plain').send(`Hello, ${user.username}!`);
+});
+
+app.delete('/api/v1/tasks/:id',async (req,res)=>{
+    if(!req.params.id){
+        return res.status(400).send({error:"URL does not contain ID"})
+    }
+    const success = await taskService.deleteTask(req.params.id);
+    if(!success){
+        return res.status(404).send({error:"Task not found"})
+    }
+    return res.status(204).send()
 });
 
 app.get('/api/v1/tasks/:id', async (req, res) => {
