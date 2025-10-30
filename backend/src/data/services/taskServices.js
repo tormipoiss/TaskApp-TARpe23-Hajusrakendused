@@ -13,5 +13,13 @@ export const taskService = {
             attributes: {exclude: ['createdAt', 'updatedAt']}
         });
         return task ? task.get({ plain: true }): undefined;
+    },
+    deleteTask: async(taskId)=>{
+        const deletedCount = await Tasks.destroy({
+            where: {
+                id: taskId,
+            }
+        });
+        return deletedCount > 0 ? true : false;
     }
 }
