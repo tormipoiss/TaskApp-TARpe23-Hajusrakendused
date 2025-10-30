@@ -1,3 +1,4 @@
+import { where } from "sequelize";
 import Tasks from "../models/TaskModel.js";
 
 export const taskService = {
@@ -17,5 +18,19 @@ export const taskService = {
             attributes: {exclude: ['createdAt', 'updatedAt']}
         });
         return task ? task.get({ plain: true }): undefined;
-    }
+    },
+    updateTask: async(id, username, title, description, deadline) => {
+        const [count] = await Tasks.update({ username, title, description, deadline  },
+            {
+                where: {
+                    id
+                },
+            }
+        );
+        if (!count) return;
+        const freshTask = await Tasks.findByPk(id, {
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
+        });
+        return freshTask.get({ plain: true });
+    },
 }
