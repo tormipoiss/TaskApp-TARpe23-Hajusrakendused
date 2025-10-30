@@ -33,4 +33,12 @@ export const taskService = {
         });
         return freshTask.get({ plain: true });
     },
+    deleteTask: async(taskId)=>{
+        const deletedCount = await Tasks.destroy({
+            where: {
+                id: taskId,
+            }
+        });
+        return deletedCount > 0 ? true : false;
+    }
 }

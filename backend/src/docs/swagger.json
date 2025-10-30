@@ -78,13 +78,13 @@
                         }
                     },
                     "400": {
-                        "description": "Bad task data",
+                        "description": "Error: Missing required fields or malformed deadline date",
                         "schema": {
                             "$ref": "#/definitions/Error"
                         },
                         "examples": {
                             "application/json": {
-                                "error": "Bad task data"
+                                "error": "Missing required fields / malformed deadline"
                             }
                         }
                     }
@@ -156,7 +156,7 @@
                         "name": "body",
                         "description": "Task with data to be updated",
                         "schema": {
-                            "$ref": "#/definitions/Task"
+                            "$ref": "#/definitions/NewTask"
                         },
                         "in": "body",
                         "required": true
@@ -171,13 +171,13 @@
                         "examples": {}
                     },
                     "400": {
-                        "description": "URL does not contain ID or bad task data",
+                        "description": "URL does not contain ID or missing required fields or malformed deadline date",
                         "schema": {
                             "$ref": "#/definitions/Error"
                         },
                         "examples": {
                             "application/json": {
-                                "error": "URL does not contain ID"
+                                "error": "URL does not contain ID / Missing required fields / malformed deadline"
                             }
                         }
                     },
