@@ -1,8 +1,12 @@
 import Tasks from "../models/TaskModel.js";
 
 export const taskService = {
-    createTask: async(username,title,description)=>{
-        await Tasks.create({username,title,description})
+    createTask: async(username, title, description, deadline) => {
+        const created = await Tasks.create({ username, title, description, deadline });
+        const fresh = await Tasks.findByPk(created.id, {
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
+        });
+        return fresh.get({ plain: true });
     },
     getAllTasks: async(username)=>{
         const tasks = await Tasks.findAll({where:{username}, attributes: ['id', 'title']})
