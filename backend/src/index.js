@@ -8,9 +8,11 @@ import { taskService } from './data/services/taskServices.js';
 import { userService } from './data/services/userServices.js';
 // await sequelize.sync(); // test
 import dotenv from 'dotenv';
+import { DATE } from 'sequelize';
 dotenv.config();
 
 const app = express();
+app.use(express.json());
 const httpServer = http.createServer(app);
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
@@ -38,13 +40,27 @@ app.get('/api/v1/tasks', async (req, res) => {
     res.status(200).type('text/plain').send(tasks);
 });
 
+app.post('/api/v1/tasks', async (req, res) => {
+    try {
+        if (!req.body.title || !req.body.description || !req.body.username) {
+            return res.status(400).send({ error: "Missing required fields: title / description / username" });
+        }
+    } catch (error) {
+        return res.status(400).send({ error: "Missing required fields: title / description / username" });
+    }
+    const deadline = Date.parse(req.body.deadline);
+    if (req.body.deadline && isNaN(deadline)) {
+        return res.status(400).send({ error: "Empty or malformed date string in field: deadline" });
+    }
+    const task = await taskService.createTask(req.body.username, req.body.title, req.body.description, deadline);
+    return res.json(task)
+});
+
 const PORT = process.env.PORT;
 
 httpServer.listen(PORT, async () => {
     await sync()
     await userService.createUser("Tiit", "pass");
-    // await taskService.createTask("Tiit","Test Task","Test task description")
-    // await taskService.createTask("Tiit","Test Task","Test task description")
     console.log(`Server is running at ${process.env.SERVER_URL}:${PORT}/`);
 });
 
