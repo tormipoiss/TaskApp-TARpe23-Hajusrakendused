@@ -91,6 +91,19 @@ app.put('/api/v1/tasks/:id', async (req, res) => {
     return res.json(task)
 });
 
+// users
+app.get('/api/v1/users/:username', async (req, res) => {
+    if (!req.params.username) {
+        return res.status(400).send({ error: "URL does not contain USERNAME" });
+    }
+    const user = await userService.getUser(req.params.username);
+    if (!user) {
+        return res.status(404).send({ error: "User not found" });
+    }
+    // maybe return total tasks if we add a new thing to the user model etc
+    return res.json(user.username);
+});
+
 app.post('/api/v1/users', async (req, res) => {
     const { username, password } = req.body;
 
