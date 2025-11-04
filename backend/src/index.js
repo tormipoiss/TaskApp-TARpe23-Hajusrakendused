@@ -142,6 +142,20 @@ app.put('/api/v1/users/:username/password', async (req, res) => {
     }
     return res.status(201).send();
 });
+
+app.delete('/api/v1/users/:username', async (req, res) => {
+    const username = req.params.username;
+
+    if (!username) {
+        return res.status(400).send({ error: "Missing username in URL" });
+    }
+    const success = await userService.deleteUser(username);
+    if (!success) {
+        return res.status(404).send({ error: "User not found" });
+    }
+    return res.status(204).send();
+});
+
 const PORT = process.env.PORT;
 
 httpServer.listen(PORT, async () => {

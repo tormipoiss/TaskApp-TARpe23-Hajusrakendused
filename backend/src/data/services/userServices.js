@@ -21,6 +21,12 @@ export const userService = {
         );
         return affectedRows > 0 ? true : false;
     },
+    deleteUser: async (username) => {
+        const deletedCount = await Users.destroy({
+            where: { username }
+        });
+        return deletedCount > 0 ? true : false;
+    },
     getUserWithPassword: async (username) => {
         const user = await Users.findByPk(username);
         return user ? user.get({ plain: true }) : undefined;
