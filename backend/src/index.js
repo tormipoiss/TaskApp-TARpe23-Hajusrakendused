@@ -101,7 +101,7 @@ app.get('/api/v1/users/:username', async (req, res) => {
         return res.status(404).send({ error: "User not found" });
     }
     // maybe return total tasks if we add a new thing to the user model etc
-    return res.json(user.username);
+    return res.json(user);
 });
 
 app.post('/api/v1/users', async (req, res) => {
@@ -117,7 +117,7 @@ app.post('/api/v1/users', async (req, res) => {
     if (!newUser) {
         return res.status(409).send({ error: "Username already exists" });
     }
-    return res.status(200).json({ username: newUser.username });
+    return res.status(201).json(newUser);
 });
 
 app.put('/api/v1/users/:username/password', async (req, res) => {

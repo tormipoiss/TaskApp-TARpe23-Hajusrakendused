@@ -8,10 +8,12 @@ export const userService = {
             return;
         }
         await Users.create({ username, password:hashedPassword });
-        return { username };
+        return { username, hashedPassword };
     },
     getUser: async (username) => {
-        const user = await Users.findByPk(username);
+        const user = await Users.findByPk(username, {
+            attributes: {exclude: ['createdAt', 'updatedAt']}
+        });
         return user ? user.get({ plain: true }): undefined;
     },
     updateUser: async (username, newHashedPassword) => {

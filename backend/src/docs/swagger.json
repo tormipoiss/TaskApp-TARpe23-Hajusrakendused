@@ -249,36 +249,6 @@
             ]
         },
         "/users": {
-            "get": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Users"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Return list of all Users",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/UserListItem"
-                            }
-                        },
-                        "examples": {
-                            "application/json": [
-                                {
-                                    "username": "some text"
-                                },
-                                {
-                                    "username": "some text"
-                                }
-                            ]
-                        }
-                    }
-                },
-                "summary": "Get all users"
-            },
             "post": {
                 "consumes": [
                     "application/json"
@@ -321,6 +291,17 @@
                         "examples": {
                             "application/json": {
                                 "error": "Missing required fields"
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "User already exists",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        },
+                        "examples": {
+                            "application/json": {
+                                "error": "User already exists"
                             }
                         }
                     }
@@ -374,65 +355,6 @@
                 },
                 "summary": "Get an user"
             },
-            "put": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Users"
-                ],
-                "parameters": [
-                    {
-                        "name": "body",
-                        "description": "User with data to be updated",
-                        "schema": {
-                            "$ref": "#/definitions/User"
-                        },
-                        "in": "body",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "User successfully updated",
-                        "schema": {
-                            "$ref": "#/definitions/User"
-                        },
-                        "examples": {
-                            "application/json": {
-                                "username": "some text",
-                                "password": "some text"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "URL does not contain username or missing required fields",
-                        "schema": {
-                            "$ref": "#/definitions/Error"
-                        },
-                        "examples": {
-                            "application/json": {
-                                "error": "URL does not contain username or missing required fields"
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "User with given username does not exist",
-                        "schema": {
-                            "$ref": "#/definitions/Error"
-                        },
-                        "examples": {
-                            "application/json": {
-                                "error": "User with given username does not exist"
-                            }
-                        }
-                    }
-                },
-                "summary": "Update an user with given data"
-            },
             "delete": {
                 "produces": [
                     "application/json"
@@ -468,6 +390,88 @@
                     }
                 },
                 "summary": "Delete an user"
+            },
+            "parameters": [
+                {
+                    "name": "username",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
+        },
+        "/users/{username}/password": {
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "description": "User with password to be updated",
+                        "schema": {
+                            "$ref": "#/definitions/UserNewPassword"
+                        },
+                        "in": "body",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Successfully updated password"
+                    },
+                    "400": {
+                        "description": "Missing username or required fields",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        },
+                        "examples": {
+                            "application/json": {
+                                "error": "Missing username or required fields"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        },
+                        "examples": {
+                            "application/json": {
+                                "error": "Invalid credentials"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User with given username does not exist",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        },
+                        "examples": {
+                            "application/json": {
+                                "error": "User with given username does not exist"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to update password",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        },
+                        "examples": {
+                            "application/json": {
+                                "error": "Failed to update password"
+                            }
+                        }
+                    }
+                },
+                "summary": "Update user password"
             },
             "parameters": [
                 {
@@ -629,6 +633,27 @@
             "example": {
                 "username": "Tormi",
                 "password": "hashedPassword"
+            }
+        },
+        "UserNewPassword": {
+            "title": "Root Type for UserNewPassword",
+            "description": "",
+            "required": [
+                "newPassword",
+                "oldPassword"
+            ],
+            "type": "object",
+            "properties": {
+                "oldPassword": {
+                    "type": "string"
+                },
+                "newPassword": {
+                    "type": "string"
+                }
+            },
+            "example": {
+                "oldPassword": "old",
+                "newPassword": "new"
             }
         }
     }
