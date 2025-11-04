@@ -119,6 +119,29 @@ app.post('/api/v1/users', async (req, res) => {
     }
     return res.status(200).json({ username: newUser.username });
 });
+
+app.put('/api/v1/users/:username/password', async (req, res) => {
+    const username = req.params.username;
+    const { oldPassword, newPassword } = req.body;
+
+    if (!username || !oldPassword || !newPassword) {
+        return res.status(400).send({ error: "Missing username, old password, or new password" });
+    }
+    const user = await userService.getUserWithPassword(username);
+    if (!user) {
+         return res.status(404).send({ error: "User not found" });
+    }
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!isMatch) {
+        return res.status(401).send({ error: "Invalid credentials" });
+    }
+    const newHashedPassword = await bcrypt.hash(newPassword, SALT_ROUNDS);
+    const success = await userService.updateUserPassword(username, newHashedPassword);
+    if (!success) {
+        return res.status(500).send({ error: "Failed to update password" });
+    }
+    return res.status(201).send();
+});
 const PORT = process.env.PORT;
 
 httpServer.listen(PORT, async () => {
