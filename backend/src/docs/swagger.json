@@ -168,7 +168,15 @@
                         "schema": {
                             "$ref": "#/definitions/Task"
                         },
-                        "examples": {}
+                        "examples": {
+                            "application/json": {
+                                "id": 76,
+                                "username": "some text",
+                                "title": "some text",
+                                "description": "some text",
+                                "deadline": "2018-02-10T09:30Z"
+                            }
+                        }
                     },
                     "400": {
                         "description": "URL does not contain ID or missing required fields or malformed deadline date",
@@ -239,6 +247,236 @@
                     "type": "number"
                 }
             ]
+        },
+        "/users": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Return list of all Users",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/UserListItem"
+                            }
+                        },
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "username": "some text"
+                                },
+                                {
+                                    "username": "some text"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "summary": "Get all users"
+            },
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "description": "User to be created",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "in": "body",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created user",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "examples": {
+                            "application/json": {
+                                "username": "some text",
+                                "password": "some text"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error, missing required fields",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        },
+                        "examples": {
+                            "application/json": {
+                                "error": "Missing required fields"
+                            }
+                        }
+                    }
+                },
+                "summary": "Create an user"
+            }
+        },
+        "/users/{username}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Return the requested user details",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "examples": {
+                            "application/json": {
+                                "username": "some text",
+                                "password": "some text"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "URL does not contain username",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        },
+                        "examples": {
+                            "application/json": {
+                                "error": "URL does not contain username"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User with given username does not exist",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        },
+                        "examples": {
+                            "application/json": {
+                                "error": "User with given username does not exist"
+                            }
+                        }
+                    }
+                },
+                "summary": "Get an user"
+            },
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "description": "User with data to be updated",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "in": "body",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User successfully updated",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "examples": {
+                            "application/json": {
+                                "username": "some text",
+                                "password": "some text"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "URL does not contain username or missing required fields",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        },
+                        "examples": {
+                            "application/json": {
+                                "error": "URL does not contain username or missing required fields"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User with given username does not exist",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        },
+                        "examples": {
+                            "application/json": {
+                                "error": "User with given username does not exist"
+                            }
+                        }
+                    }
+                },
+                "summary": "Update an user with given data"
+            },
+            "delete": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "responses": {
+                    "204": {
+                        "description": "User successfully deleted"
+                    },
+                    "400": {
+                        "description": "URL does not contain username",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        },
+                        "examples": {
+                            "application/json": {
+                                "error": "URL does not contain username"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User with given username does not exist",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        },
+                        "examples": {
+                            "application/json": {
+                                "error": "User with given username does not exist"
+                            }
+                        }
+                    }
+                },
+                "summary": "Delete an user"
+            },
+            "parameters": [
+                {
+                    "name": "username",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
         }
     },
     "definitions": {
@@ -255,6 +493,7 @@
             "properties": {
                 "id": {
                     "format": "int32",
+                    "description": "Must be unique",
                     "type": "integer"
                 },
                 "username": {
@@ -341,6 +580,7 @@
             "properties": {
                 "id": {
                     "format": "int32",
+                    "description": "Must be unique",
                     "type": "integer"
                 },
                 "title": {
@@ -350,6 +590,45 @@
             "example": {
                 "id": 1,
                 "title": "Task"
+            }
+        },
+        "UserListItem": {
+            "title": "Root Type for UserListItem",
+            "description": "",
+            "required": [
+                "username"
+            ],
+            "type": "object",
+            "properties": {
+                "username": {
+                    "description": "Must be unique",
+                    "type": "string"
+                }
+            },
+            "example": {
+                "username": "Tormi"
+            }
+        },
+        "User": {
+            "title": "Root Type for User",
+            "description": "",
+            "required": [
+                "password",
+                "username"
+            ],
+            "type": "object",
+            "properties": {
+                "username": {
+                    "description": "Must be unique",
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            },
+            "example": {
+                "username": "Tormi",
+                "password": "hashedPassword"
             }
         }
     }
