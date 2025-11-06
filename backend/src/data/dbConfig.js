@@ -1,4 +1,9 @@
-import { Sequelize } from 'sequelize';
+import {DataTypes, Sequelize} from 'sequelize';
+import TaskModel from "./models/TaskModel.js";
+import UserModel from "./models/UserModel.js";
+import SharingModel from "./models/SharingModel.js";
+import relations from "./models/relations.js";
+import seed from "./seed.js";
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -28,9 +33,28 @@ const sequelize = isTest
   }
 })();
 
+const db = {};
+db.Tasks = TaskModel(sequelize, DataTypes);
+db.Users = UserModel(sequelize, DataTypes);
+db.Shares = SharingModel(sequelize, DataTypes);
+relations(db);
+
 const sync = (async () => {
   await sequelize.sync({ alter: true });
   console.log("All models were synchonized.");
 })
 
-export { sequelize, sync };
+if (process.env.DB_SYNC === "true") {
+    await sync();
+}
+if (process.env.DB_SEED === "true") {
+    try {
+      await seed(db);
+      console.log("Seeding succeeded!");
+    }
+    catch (e) {
+      console.error("Seeding failed", e.message);
+    }
+}
+
+export { sequelize, sync, db };

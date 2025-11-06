@@ -1,5 +1,6 @@
 import { where } from "sequelize";
-import Tasks from "../models/TaskModel.js";
+import { db } from "../dbConfig.js";
+const { Tasks } = db;
 
 export const taskService = {
     createTask: async(username, title, description, deadline) => {

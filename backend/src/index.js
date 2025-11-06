@@ -159,8 +159,6 @@ app.delete('/api/v1/users/:username', async (req, res) => {
 const PORT = process.env.PORT;
 
 httpServer.listen(PORT, async () => {
-    await sync()
-    await userService.createUser("Tiit", "pass");
     console.log(`Server is running at ${process.env.SERVER_URL}:${PORT}/`);
 });
 
