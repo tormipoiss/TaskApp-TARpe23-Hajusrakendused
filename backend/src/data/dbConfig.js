@@ -40,7 +40,8 @@ db.Shares = SharingModel(sequelize, DataTypes);
 relations(db);
 
 const sync = (async () => {
-  await sequelize.sync({ alter: true });
+  await sequelize.query("PRAGMA foreign_keys = OFF")
+  await sequelize.sync({ force: true });
   console.log("All models were synchonized.");
 })
 

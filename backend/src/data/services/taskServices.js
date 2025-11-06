@@ -1,6 +1,6 @@
 import { where } from "sequelize";
 import { db } from "../dbConfig.js";
-const { Tasks } = db;
+const { Tasks, Users } = db;
 
 export const taskService = {
     createTask: async(username, title, description, deadline) => {
@@ -15,8 +15,15 @@ export const taskService = {
         return tasks ? tasks: [];
     },
     getTask: async (id) => {
-        const task = await Tasks.findByPk(id, {
-            attributes: {exclude: ['createdAt', 'updatedAt']}
+        const task = await Tasks.findOne({
+            where: {
+                id: id
+            },
+            attributes: {exclude: ['createdAt', 'updatedAt']},
+            include: {
+                model: Users,
+                as: "Owners"
+            }
         });
         return task ? task.get({ plain: true }): undefined;
     },

@@ -5,8 +5,12 @@ export default (sequelize, DataTypes) => {
             id: {
                 type: DataTypes.INTEGER,
                 autoIncrement: true,
-                primaryKey: true,
+                primaryKey: true
             },
+            sharedUser: {
+                type: DataTypes.STRING,
+                allowNull: false
+            }
         }
     );
 }

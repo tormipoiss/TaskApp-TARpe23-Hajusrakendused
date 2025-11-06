@@ -20,8 +20,7 @@ const httpServer = http.createServer(app);
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 app.get('/', async (req, res) => {
-    const user = await userService.getUser("Tiit");
-    res.status(200).type('text/plain').send(`Hello, ${user.username}!`);
+    res.status(200).type('text/html').send(`<a href="/docs">swagger</a>`);
 });
 
 app.delete('/api/v1/tasks/:id',async (req,res)=>{
