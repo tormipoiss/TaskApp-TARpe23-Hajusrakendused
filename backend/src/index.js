@@ -125,7 +125,7 @@ app.put('/api/v1/users/:username/password', async (req, res) => {
     if (!username || !oldPassword || !newPassword) {
         return res.status(400).send({ error: "Missing username, old password, or new password" });
     }
-    const user = await userService.getUserWithPassword(username);
+    const user = await userService.getUser(username);
     if (!user) {
          return res.status(404).send({ error: "User not found" });
     }
@@ -134,7 +134,7 @@ app.put('/api/v1/users/:username/password', async (req, res) => {
         return res.status(401).send({ error: "Invalid credentials" });
     }
     const newHashedPassword = await bcrypt.hash(newPassword, SALT_ROUNDS);
-    const success = await userService.updateUserPassword(username, newHashedPassword);
+    const success = await userService.updateUser(username, newHashedPassword);
     if (!success) {
         return res.status(500).send({ error: "Failed to update password" });
     }
