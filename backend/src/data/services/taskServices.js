@@ -19,7 +19,7 @@ export const taskService = {
             where: {
                 id: id
             },
-            attributes: {exclude: ['createdAt', 'updatedAt']},
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
             include: {
                 model: Users,
                 as: "Owners"

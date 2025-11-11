@@ -40,7 +40,7 @@ db.Shares = SharingModel(sequelize, DataTypes);
 relations(db);
 
 const sync = (async () => {
-  await sequelize.query("PRAGMA foreign_keys = OFF")
+  // await sequelize.query("PRAGMA foreign_keys = OFF")
   await sequelize.sync({ force: true });
   console.log("All models were synchonized.");
 })
@@ -48,6 +48,7 @@ const sync = (async () => {
 if (process.env.DB_SYNC === "true") {
     await sync();
 }
+
 if (process.env.DB_SEED === "true") {
     try {
       await seed(db);

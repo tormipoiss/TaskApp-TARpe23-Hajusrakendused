@@ -29,9 +29,10 @@ export default async (db) => {
         where: { id: 1 },
         defaults: {
             TaskId: MegaTask.id,
-            UserName: Tiit.username,
-            sharedUser: Tormi.username
+            UserUsername: Tiit.username,
+            sharedUser: Tormi.username,
         }
     })
-    console.log("Share created", shareCreated)
+    console.log("Share created", shareCreated);
+    console.dir(Share.get({plain:true}), {depth: null});
 }
