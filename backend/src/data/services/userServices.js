@@ -28,15 +28,4 @@ export const userService = {
         });
         return deletedCount > 0 ? true : false;
     },
-    getUserWithPassword: async (username) => {
-        const user = await Users.findByPk(username);
-        return user ? user.get({ plain: true }) : undefined;
-    },
-    updateUserPassword: async (username, newHashedPassword) => {
-        const [affectedRows] = await Users.update(
-            { password: newHashedPassword },
-            { where: { username } }
-        );
-        return affectedRows === 1;
-    }
 }
