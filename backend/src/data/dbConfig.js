@@ -16,12 +16,26 @@ const sequelize = isTest
   ? new Sequelize({
       dialect: 'sqlite',
       storage: ':memory:', // Use in-memory SQLite for tests
-      logging: false
+      logging: false,
+      define: {
+        defaultScope: {
+          attributes: {
+            exclude: [ 'createdAt', 'updatedAt' ]
+          }
+        } 
+      }
     })
   : new Sequelize({
       dialect: 'sqlite',
       storage: `./${process.env.DB_FILE}`, // Use file-based SQLite for production
-      logging: false
+      logging: false,
+      define: {
+        defaultScope: {
+          attributes: {
+            exclude: [ 'createdAt', 'updatedAt' ]
+          }
+        } 
+      }
     });
 
 (async () => {

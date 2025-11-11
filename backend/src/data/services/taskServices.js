@@ -5,9 +5,7 @@ const { Tasks, Users } = db;
 export const taskService = {
     createTask: async(username, title, description, deadline) => {
         const created = await Tasks.create({ username, title, description, deadline });
-        const fresh = await Tasks.findByPk(created.id, {
-            attributes: { exclude: ['createdAt', 'updatedAt'] },
-        });
+        const fresh = await Tasks.findByPk(created.id);
         return fresh.get({ plain: true });
     },
     getAllTasks: async(username)=>{
@@ -19,7 +17,6 @@ export const taskService = {
             where: {
                 id: id
             },
-            attributes: { exclude: ['createdAt', 'updatedAt'] },
             include: {
                 model: Users,
                 as: "Owners"
@@ -36,9 +33,7 @@ export const taskService = {
             }
         );
         if (!count) return;
-        const freshTask = await Tasks.findByPk(id, {
-            attributes: { exclude: ['createdAt', 'updatedAt'] },
-        });
+        const freshTask = await Tasks.findByPk(id);
         return freshTask.get({ plain: true });
     },
     deleteTask: async(taskId)=>{
