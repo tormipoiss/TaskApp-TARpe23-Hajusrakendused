@@ -2,22 +2,6 @@ import { shareService } from "../data/services/shareServices.js";
 import { taskService } from "../data/services/taskServices.js";
 import { userService} from "../data/services/userServices.js";
 
-const getAll = async (req, res) => {
-    const tasks = await taskService.getAllTasks("Tiit");
-    res.status(200).type('text/plain').send(tasks);
-}
-
-const getById = async (req, res) => {
-    if (!req.params.id) {
-        return res.status(400).send({ error: "URL does not contain ID" });
-    }
-    const task = await taskService.getTask(req.params.id);
-    if (!task) {
-        return res.status(404).send({ error: "Task not found" });
-    }
-    return res.json(task);
-}
-
 const create = async (req, res) => {
     try {
         if (!req.body.taskOwner || !req.body.taskId || !req.body.sharedWith) {
@@ -68,4 +52,4 @@ const deleteBySharedWithUser = async (req,res)=>{
     return res.status(204).send()
 }
 
-export default { deleteBySharedWithUser, create,}
+export default { deleteBySharedWithUser, create }

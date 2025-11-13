@@ -481,6 +481,140 @@
                     "type": "string"
                 }
             ]
+        },
+        "/shares": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shares"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "description": "Share to be created - includes username to be shared with",
+                        "schema": {
+                            "$ref": "#/definitions/NewShare"
+                        },
+                        "in": "body",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Task has been successfully shared",
+                        "schema": {
+                            "$ref": "#/definitions/Share"
+                        },
+                        "examples": {
+                            "application/json": {
+                                "id": 71,
+                                "taskId": 22,
+                                "UserUsername": "some text",
+                                "sharedUser": "some text"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Request missing data or data is malformed",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        },
+                        "examples": {
+                            "application/json": {
+                                "error": "Missing required fields: taskOwner / taskId / sharedWith"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "The task ID, task owner or user to be shared with were not found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        },
+                        "examples": {
+                            "application/json": {
+                                "error": "The task ID, task owner or user to be shared with were not found"
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Task has already been shared with chosen user",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        },
+                        "examples": {
+                            "application/json": {
+                                "error": "Task already shared with this user"
+                            }
+                        }
+                    }
+                },
+                "summary": "Create a share"
+            }
+        },
+        "/shares/{taskId}": {
+            "delete": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shares"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "description": "User whose share to be deleted",
+                        "schema": {
+                            "$ref": "#/definitions/sharedWith"
+                        },
+                        "in": "body",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Task share successfully deleted"
+                    },
+                    "400": {
+                        "description": "Missing required fields: sharedWith or URL does not contain task ID",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        },
+                        "examples": {
+                            "application/json": {
+                                "error": "Missing required fields: sharedWith or URL does not contain task ID"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User who this was shared to not found or share not found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        },
+                        "examples": {
+                            "application/json": {
+                                "error": "User who this was shared to not found or share not found"
+                            }
+                        }
+                    }
+                },
+                "summary": "Deletes a share"
+            },
+            "parameters": [
+                {
+                    "name": "taskId",
+                    "in": "path",
+                    "required": true,
+                    "type": "number"
+                }
+            ]
         }
     },
     "definitions": {
@@ -654,6 +788,84 @@
             "example": {
                 "oldPassword": "old",
                 "newPassword": "new"
+            }
+        },
+        "Share": {
+            "title": "Root Type for Share",
+            "description": "",
+            "required": [
+                "id",
+                "sharedUser",
+                "taskId",
+                "UserUsername"
+            ],
+            "type": "object",
+            "properties": {
+                "id": {
+                    "format": "int32",
+                    "description": "Must be unique",
+                    "type": "integer"
+                },
+                "taskId": {
+                    "format": "int32",
+                    "description": "Must be unique",
+                    "type": "integer"
+                },
+                "UserUsername": {
+                    "type": "string"
+                },
+                "sharedUser": {
+                    "description": "Must be unique",
+                    "type": "string"
+                }
+            },
+            "example": {
+                "id": 1,
+                "taskId": 1,
+                "UserUsername": "Tiit",
+                "sharedUser": "Tormi"
+            }
+        },
+        "NewShare": {
+            "title": "Root Type for NewShare",
+            "description": "",
+            "required": [
+                "sharedWith",
+                "taskId",
+                "taskOwner"
+            ],
+            "type": "object",
+            "properties": {
+                "taskId": {
+                    "format": "int32",
+                    "description": "Must be unique",
+                    "type": "integer"
+                },
+                "taskOwner": {
+                    "type": "string"
+                },
+                "sharedWith": {
+                    "description": "Must be unique",
+                    "type": "string"
+                }
+            },
+            "example": {
+                "taskId": 1,
+                "taskOwner": "Tiit",
+                "sharedWith": "Tormi"
+            }
+        },
+        "sharedWith": {
+            "title": "Root Type for sharedWith",
+            "description": "",
+            "type": "object",
+            "properties": {
+                "sharedWith": {
+                    "type": "string"
+                }
+            },
+            "example": {
+                "sharedWith": "Tormi"
             }
         }
     }
