@@ -5,6 +5,7 @@ import swaggerDocument from './docs/swagger.json' with { type: 'json' };
 import taskRoutes from './routes/taskRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import dotenv from 'dotenv';
+import shareRoutes from './routes/shareRoutes.js';
 dotenv.config();
 const app = express();
 app.use(express.json());
@@ -19,6 +20,8 @@ app.get('/', async (req, res) => {
 taskRoutes(app);
 
 userRoutes(app)
+
+shareRoutes(app)
 
 const PORT = process.env.PORT;
 

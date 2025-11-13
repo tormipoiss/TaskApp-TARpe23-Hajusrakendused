@@ -17,10 +17,13 @@ export const taskService = {
             where: {
                 id: id
             },
-            include: {
-                model: Users,
-                as: "Owners"
-            }
+            include: [
+                { 
+                    model: db.Users, 
+                    as: 'SharedWith',
+                    attributes: { exclude: ['password','createdAt','updatedAt'] }
+                }
+            ]
         });
         return task ? task.get({ plain: true }): undefined;
     },
