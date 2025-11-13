@@ -10,10 +10,6 @@ export default (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: false
             }
-        }, {
-            defaultScope: {
-                attributes: { exclude: ['password'] }
-            }
         }
     );
 }
