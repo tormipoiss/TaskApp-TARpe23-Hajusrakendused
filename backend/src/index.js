@@ -3,13 +3,9 @@ import http from 'http';
 import bcrypt from 'bcrypt';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from './docs/swagger.json' with { type: 'json' };
-// import  sequelize  from './data/dbConfig.js'; // test
-import { taskService } from './data/services/taskServices.js';
+import taskRoutes from './routes/taskRoutes.js';
 import { userService } from './data/services/userServices.js';
-// await sequelize.sync(); // test
 import dotenv from 'dotenv';
-import { error } from 'console';
-import { DATE } from 'sequelize';
 dotenv.config();
 const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS, 10) || 10;
 const app = express();
@@ -22,74 +18,8 @@ app.get('/', async (req, res) => {
     res.status(200).type('text/html').send(`<a href="/docs">swagger</a>`);
 });
 
-app.delete('/api/v1/tasks/:id',async (req,res)=>{
-    if(!req.params.id){
-        return res.status(400).send({error:"URL does not contain ID"})
-    }
-    const success = await taskService.deleteTask(req.params.id);
-    if(!success){
-        return res.status(404).send({error:"Task not found"})
-    }
-    return res.status(204).send()
-});
+taskRoutes(app);
 
-app.get('/api/v1/tasks/:id', async (req, res) => {
-    //const user = await userService.getUser("Tiit");
-    if (!req.params.id) {
-        return res.status(400).send({ error: "URL does not contain ID" });
-    }
-    const task = await taskService.getTask(req.params.id);
-    if (!task) {
-        return res.status(404).send({ error: "Task not found" });
-    }
-    return res.json(task);
-});
-
-app.get('/api/v1/tasks', async (req, res) => {
-    //const user = await userService.getUser("Tiit");
-    const tasks = await taskService.getAllTasks("Tiit");
-    res.status(200).type('text/plain').send(tasks);
-});
-
-app.post('/api/v1/tasks', async (req, res) => {
-    try {
-        if (!req.body.title || !req.body.description || !req.body.username) {
-            return res.status(400).send({ error: "Missing required fields: title / description / username" });
-        }
-    } catch (error) {
-        return res.status(400).send({ error: "Missing required fields: title / description / username" });
-    }
-    const deadline = Date.parse(req.body.deadline);
-    if (req.body.deadline && isNaN(deadline)) {
-        return res.status(400).send({ error: "Empty or malformed date string in field: deadline" });
-    }
-    const task = await taskService.createTask(req.body.username, req.body.title, req.body.description, deadline);
-    return res.status(201).json(task)
-});
-
-app.put('/api/v1/tasks/:id', async (req, res) => {
-    if (!req.params.id) {
-        return res.status(400).send({ error: "URL does not contain ID" });
-    }
-    try {
-        if (!req.body.title || !req.body.description || !req.body.username) {
-            return res.status(400).send({ error: "Missing required fields: title / description / username" });
-        }
-    } catch (error) {
-        return res.status(400).send({ error: "Missing required fields: title / description / username" });
-    }
-    const deadline = Date.parse(req.body.deadline);
-    if (req.body.deadline && isNaN(deadline)) {
-        return res.status(400).send({ error: "Empty or malformed date string in field: deadline" });
-    }
-    const task = await taskService.updateTask(req.params.id, req.body.username, req.body.title, req.body.description, deadline);
-    if (!task) {
-        return res.status(404).send({ error: "Task not found" });
-    }
-    return res.json(task)
-});
-
-// users
 app.get('/api/v1/users/:username', async (req, res) => {
     if (!req.params.username) {
         return res.status(400).send({ error: "URL does not contain USERNAME" });
