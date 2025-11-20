@@ -1,14 +1,24 @@
 export default async (db) => {
-    const [MegaTask, taskCreated] = await db.Tasks.findOrCreate({
+    const [TiitTask, taskTiitCreated] = await db.Tasks.findOrCreate({
         where: { username: "Tiit" },
         defaults: { 
             username: "Tiit",
-            title:"MegaTask",
+            title:"TiitTask",
             description:"asdsadasasdasdas",
             deadline: new Date("2025-11-18T00:00:00.000Z"),
         }
     });
-    console.log("Task created", taskCreated)
+    console.log("TiitTask -> With Tiit owner created", taskTiitCreated)
+    const [TormiTask, taskTormiCreated] = await db.Tasks.findOrCreate({
+        where: { username: "Tormi" },
+        defaults: { 
+            username: "Tormi",
+            title:"TormiTask",
+            description:"asdsadasasdasdas",
+            deadline: new Date("2025-11-18T00:00:00.000Z"),
+        }
+    });
+    console.log("TormiTask -> With Tormi owner created", taskTormiCreated)
     const [Tiit, userCreated] = await db.Users.findOrCreate({
         where: { username: "Tiit" },
         defaults: {
@@ -16,7 +26,7 @@ export default async (db) => {
             password: "$2b$10$XAfZIvRHT6drLqZ7JiGMwOBnbuTMg67BSm.2EJNOA1evILtnWu2i."
         }
     });
-    console.log("User created", userCreated)
+    console.log("Tiit created", userCreated)
     const [Tormi, tormiCreated] = await db.Users.findOrCreate({
         where: { username: "Tormi" },
         defaults: {

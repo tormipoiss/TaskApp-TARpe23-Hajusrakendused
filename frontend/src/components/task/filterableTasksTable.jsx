@@ -1,6 +1,6 @@
 import TasksTable from "./tasksTable";
 
-export default function FilterableTasksTable({ tasks }) {
+export default function FilterableTasksTable() {
     return (
         <div>
             <form>
@@ -14,7 +14,7 @@ export default function FilterableTasksTable({ tasks }) {
                     Only show products in stock
                 </label>
             </form>
-            <TasksTable tasks={tasks} />
+            <TasksTable />
         </div>
     );
 }

@@ -18,6 +18,10 @@ Mine kausta backend ja nimeta ümber .env.example -> .env
 
 Siis täida .env fail sobivate andmetega
 
+Mine kausta frontend ja nimeta ümber .env.example -> .env
+
+Siis täida .env fail sobivate andmetega
+
 Peale kloonimist minna kloonitud kausta ja käivitada käsk:
 "npm install"
 Projekti käivitamiseks anda käsk:

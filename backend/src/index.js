@@ -6,8 +6,10 @@ import taskRoutes from './routes/taskRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import dotenv from 'dotenv';
 import shareRoutes from './routes/shareRoutes.js';
+import cors from 'cors';
 dotenv.config();
 const app = express();
+app.use(cors());
 app.use(express.json());
 const httpServer = http.createServer(app);
 

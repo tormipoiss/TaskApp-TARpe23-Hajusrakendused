@@ -1,22 +1,34 @@
 import TaskRow from "./tableParts/taskRow.jsx"
+import {useEffect, useState} from "react";
+import axios from "axios";
 
-export default function TasksTable({ tasks }) {
-  const rows = [];
-//   let lastDeadline = null;
+export default function TasksTable() {
+  const [rows, setRows] = useState([]);
 
-  tasks.forEach((task) => {
-    // if (task.deadline !== lastDeadline) {
-    //     rows.push(
-    //         <TaskRow
-    //             task={task} />
-    //     );
-    // }
-    rows.push(
-        <TaskRow
-            task={task} />
-    );
-    // lastDeadline = task.deadline
-  });
+  useEffect(() => {
+    let tasks = [];
+    const categorizeTasks = () => {
+      const rows = [];
+      tasks.forEach((task) => {
+        rows.push(
+          <TaskRow
+            task={task}
+            key={task.id} />
+        );
+      });
+      setRows(rows);
+    }
+    const fetchTasks = async () => {
+      try {
+        const response = (await axios.get(import.meta.env.VITE_BACKEND_URL + "/api/v1/tasks"));
+        tasks = response.data;
+        categorizeTasks();
+      } catch (error) {
+        console.log("Failed to fetch tasks:", error);
+      }
+    }
+    fetchTasks().then(() => console.log("Success fetching tasks"));
+  }, []);
 
   return (
     <table>
