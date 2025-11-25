@@ -8,38 +8,6 @@
     "basePath": "/api/v1",
     "paths": {
         "/tasks": {
-            "get": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Tasks"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Return list of all Tasks",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/TaskListItem"
-                            }
-                        },
-                        "examples": {
-                            "application/json": [
-                                {
-                                    "id": 35,
-                                    "title": "some text"
-                                },
-                                {
-                                    "id": 43,
-                                    "title": "some text"
-                                }
-                            ]
-                        }
-                    }
-                },
-                "summary": "Get all tasks"
-            },
             "post": {
                 "consumes": [
                     "application/json"
@@ -613,6 +581,59 @@
                     "in": "path",
                     "required": true,
                     "type": "number"
+                }
+            ]
+        },
+        "/tasks/getbyuser/{username}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tasks"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Return list of tasks from user",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/TaskListItem"
+                            }
+                        },
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "id": 23,
+                                    "title": "some text"
+                                },
+                                {
+                                    "id": 32,
+                                    "title": "some text"
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "URL does not contain username",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        },
+                        "examples": {
+                            "application/json": {
+                                "error": "URL does not contain username"
+                            }
+                        }
+                    }
+                },
+                "summary": "Get all tasks from user"
+            },
+            "parameters": [
+                {
+                    "name": "username",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
                 }
             ]
         }

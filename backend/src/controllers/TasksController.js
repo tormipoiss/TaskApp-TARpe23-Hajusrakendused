@@ -1,8 +1,11 @@
 import { taskService } from "../data/services/taskServices.js";
 
 const getAll = async (req, res) => {
-    const tasks = await taskService.getAllTasks("Tiit");
-    res.status(200).type('text/plain').send(tasks);
+    if (!req.params.username) {
+        return res.status(400).send({ error: "URL does not contain username" });
+    }
+    const task = await taskService.getAllTasks(req.params.username);
+    return res.json(task);
 }
 
 const getById = async (req, res) => {
