@@ -8,4 +8,5 @@ export default (app) => {
     app.post('/api/v1/users', UsersController.create);
 
     app.put('/api/v1/users/:username/password', UsersController.updatePassword);
+    app.post('/api/v1/users/login', UsersController.get);
 }
