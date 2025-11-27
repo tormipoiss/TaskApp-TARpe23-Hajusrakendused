@@ -2,6 +2,7 @@ import './App.css';
 import FilterableTasksTable from './components/task/filterableTasksTable';
 import Login from './components/auth/login.jsx';
 import Register from './components/auth/register.jsx';
+import CreateTask from './components/task/createTask.jsx';
 import {
   BrowserRouter,
   Routes,
@@ -82,6 +83,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/logout" element={<Logout />} />
+        <Route path="/createTask" element={<CreateTask />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

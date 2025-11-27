@@ -1,17 +1,21 @@
 import TaskRow from "./tableParts/taskRow.jsx"
 import {useEffect, useState} from "react";
 import axios from "axios";
+import {
+  useNavigate,
+} from 'react-router-dom';
 
 export default function TasksTable() {
   const [tasks, setTasks] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [noTasksContent, setNoTasksContent] = useState("");
   const [rows, setRows] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchTasks = async () => {
-      try {
-        const response = (await axios.get(import.meta.env.VITE_BACKEND_URL + "/api/v1/tasks"));
+      try { 
+        const response = (await axios.get(import.meta.env.VITE_BACKEND_URL + `/api/v1/tasks/getbyuser/${localStorage.getItem('username')}`));
         const fetchedTasks = response.data
         setTasks(fetchedTasks);
 
@@ -106,6 +110,9 @@ export default function TasksTable() {
         }
         .create-btn {
           background-color: #2196F3;
+          color: #FFFFFF;
+          padding: 4px;
+          border-radius:3px;
         }
         .view-btn {
           background-color: #009688;
@@ -131,7 +138,8 @@ export default function TasksTable() {
           onChange={e => setSearchTerm(e.target.value)}
         />
 
-        <button className="create-btn" onClick={() => alert('Create clicked')}>
+
+        <button className="create-btn" onClick={() => navigate("/createTask", { replace: true })}>
           Loo ülesanne
         </button>
       </div>
