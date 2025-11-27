@@ -9,7 +9,7 @@ export const taskService = {
         return fresh.get({ plain: true });
     },
     getAllTasks: async(username)=>{
-        const tasks = await Tasks.findAll({where:{username}, attributes: ['id', 'title']})
+        const tasks = await Tasks.findAll({where:{username}, attributes: ['id', 'title', 'deadline']})
         return tasks ? tasks: [];
     },
     getTask: async (id) => {
