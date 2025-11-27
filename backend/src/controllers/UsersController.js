@@ -14,6 +14,23 @@ const getById = async (req, res) => {
     }
     return res.json(user);
 }
+const get = async (req,res)=>{
+    const { username, password } = req.body;
+
+    if (!username || !password) {
+        return res.status(400).send({ error: "Missing username or password" });
+    }
+    const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+    const user = await userService.getUser(username);
+    if(!user){
+        return res.status(404).send({ error: "User not found" });
+    }
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+        return res.status(401).send({ error: "Invalid credentials" });
+    }
+    return res.status(200).send();
+}
 
 const create = async (req, res) => {
     const { username, password } = req.body;
@@ -67,4 +84,4 @@ const deleteById = async (req, res) => {
     return res.status(204).send();
 }
 
-export default { getById, create, updatePassword, deleteById }
+export default { getById, create, updatePassword, deleteById,get }
