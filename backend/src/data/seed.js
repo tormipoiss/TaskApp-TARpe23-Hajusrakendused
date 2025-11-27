@@ -8,6 +8,15 @@ export default async (db) => {
             deadline: new Date("2025-11-18T00:00:00.000Z"),
         }
     });
+    const [TiitTask2, taskTiitCreated2] = await db.Tasks.findOrCreate({
+        where: { username: "Tiit" },
+        defaults: { 
+            username: "Tiit",
+            title:"TiitTask2",
+            description:"asdsadasasdasdas",
+            deadline: new Date("2025-11-18T00:00:00.000Z"),
+        }
+    });
     console.log("TiitTask -> With Tiit owner created", taskTiitCreated)
     const [TormiTask, taskTormiCreated] = await db.Tasks.findOrCreate({
         where: { username: "Tormi" },
