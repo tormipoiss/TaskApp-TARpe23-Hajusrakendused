@@ -56,7 +56,7 @@ function App() {
         <div>
           {username ? (
             <>
-              <span style={{ marginRight: '1rem' }}>
+              <span style={{ marginRight: '1rem', color: "black" }}>
                 Hello, <strong>{username}</strong>
               </span>
               <Link to="/logout" style={{ color: '#d32f2f' }}>Logout</Link>

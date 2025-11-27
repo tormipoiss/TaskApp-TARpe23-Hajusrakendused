@@ -636,6 +636,66 @@
                     "type": "string"
                 }
             ]
+        },
+        "/users/login": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "description": "User login info",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        },
+                        "in": "body",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully logged in with user"
+                    },
+                    "400": {
+                        "description": "Missing username or password",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        },
+                        "examples": {
+                            "application/json": {
+                                "error": "Missing username or password"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        },
+                        "examples": {
+                            "application/json": {
+                                "error": "Invalid credentials"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        },
+                        "examples": {
+                            "application/json": {
+                                "error": "User not found"
+                            }
+                        }
+                    }
+                },
+                "summary": "Login with user"
+            }
         }
     },
     "definitions": {
