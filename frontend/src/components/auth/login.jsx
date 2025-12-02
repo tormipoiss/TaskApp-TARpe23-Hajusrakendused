@@ -24,51 +24,51 @@ function Login() {
     e.preventDefault();
     setError("");
     if (!username || !password) {
-      setError("Both fields are required!");
+      setError("Täida mõlemad väljad!");
       return;
     }
     tryLogin(username, password).then((result) => {
       if(result === 400){
-        setError("Missing username or password");
+        setError("Kasuja või parool puudub");
         return;
       }
       if(result === 404){
-        setError("User not found");
+        setError("Kasutajat ei leitud");
         return;
       }
       if(result === 401){
-        setError("Invalid credentials");
+        setError("Valesti kasutajanimi või parool");
         return;
       }
       if(result === 500){
-        setError("Server error. Please try again later.");
+        setError("Serveri viga. Proovi hiljem uuesti.");
         return;
       }
       localStorage.setItem("username",username);
       window.dispatchEvent(new Event("storage"));
-      confirm("Login successful!");
+      confirm("Sisselogimine õnnestus!");
       navigate("/");
     });
   };
 
   return (
     <div className="container">
-      <h2>Login</h2>
+      <h2>Logi sisse</h2>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          placeholder="Username"
+          placeholder="Kasutajanimi"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
         <input
           type="password"
-          placeholder="Password"
+          placeholder="Parool"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
         {error && <p className="error">{error}</p>}
-        <button type="submit">Login</button>
+        <button type="submit">Logi sisse</button>
       </form>
     </div>
   );
