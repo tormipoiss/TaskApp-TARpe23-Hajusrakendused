@@ -29,7 +29,7 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use(express.static(path.join(__dirname, '../../frontend/dist')));
 
 
-app.get('*path', (req, res) => {
+app.get(/^\/(?!api|docs|health|favicon\.ico).*$/, (req, res) => {
   res.sendFile(path.join(__dirname, '../../frontend/dist/index.html'));
 });
 

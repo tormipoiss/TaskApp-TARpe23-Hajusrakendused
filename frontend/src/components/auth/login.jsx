@@ -4,7 +4,7 @@ import axios from "axios";
 import "./auth.css";
 async function tryLogin(username, password){
     try {
-        const response = (await axios.post(import.meta.env.VITE_BACKEND_URL + "/api/v1/users/login",{ username, password }));
+        const response = (await axios.post("/api/v1/users/login",{ username, password }));
         return response.status;
       } catch (error) {
         if (error.response) {

@@ -80,7 +80,7 @@ function Profile() {
     }
 
     try {
-      const response = (await axios.put(import.meta.env.VITE_BACKEND_URL + `/api/v1/users/${username}/password`,{oldPassword: modal.passwordForm.oldPassword, newPassword: modal.passwordForm.newPassword}));
+      const response = (await axios.put(`/api/v1/users/${username}/password`,{oldPassword: modal.passwordForm.oldPassword, newPassword: modal.passwordForm.newPassword}));
       setModal({
         show: true,
         message: "Parool edukalt muudetud!",
@@ -137,7 +137,7 @@ function Profile() {
   
   const confirmDeleteAccount = async () => {
     try{
-        const response = (await axios.delete(import.meta.env.VITE_BACKEND_URL + `/api/v1/users/${username}`));
+        const response = (await axios.delete(`/api/v1/users/${username}`));
         setModal({
             show: true,
             message: "Teie konto on edukalt kustutatud.",
