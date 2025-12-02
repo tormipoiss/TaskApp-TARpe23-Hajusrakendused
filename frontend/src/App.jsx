@@ -2,6 +2,7 @@ import './App.css';
 import FilterableTasksTable from './components/task/filterableTasksTable';
 import Login from './components/auth/login.jsx';
 import Register from './components/auth/register.jsx';
+import Profile from './components/profile/profileModal.jsx';
 import {
   BrowserRouter,
   Routes,
@@ -59,6 +60,7 @@ function App() {
               <span style={{ marginRight: '1rem', color: "black" }}>
                 Tere, <strong>{username}</strong>
               </span>
+              <Link to="/profile" style={{ color: '#003cffff', marginRight:'0.5rem' }}>Profile</Link>
               <Link to="/logout" style={{ color: '#d32f2f' }}>Logi välja</Link>
             </>
           ) : (
@@ -82,6 +84,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/logout" element={<Logout />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
