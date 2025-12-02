@@ -8,31 +8,48 @@ import {
 export default function TasksTable() {
   const [tasks, setTasks] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [filteredTasksSorted, setFilteredTasksSorted] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchTasks = async () => {
       try { 
         const response = (await axios.get(import.meta.env.VITE_BACKEND_URL + `/api/v1/tasks/getbyuser/${localStorage.getItem('username')}`));
-        const fetchedTasks = response.data
-        setTasks(fetchedTasks);
+        setTasks(response.data);
       } catch (error) {
         console.log("Failed to fetch tasks:", error);
       }
     }
-    fetchTasks().then(() => console.log("Success fetching tasks"));
+    fetchTasks();
   }, []);
 
-  const filteredTasks = tasks.filter(task =>
-    task.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // ✅ Filter + Sort in useEffect, not component body
+  useEffect(() => {
+    const filtered = tasks.filter(task =>
+      task.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    
+    const sorted = filtered.sort((a, b) => {
+      if (!a.deadline && !b.deadline) return 0;
+      if (!a.deadline) return 1;
+      if (!b.deadline) return -1;
+      return new Date(a.deadline) - new Date(b.deadline);
+    });
+    
+    setFilteredTasksSorted(sorted);
+  }, [tasks, searchTerm]);  // Re-run when tasks or search change
 
-  const filteredTasksSorted = [...filteredTasks].sort((a, b) => {
-    if (!a.deadline && !b.deadline) return 0;
-    if (!a.deadline) return 1;
-    if (!b.deadline) return -1;
-    return new Date(a.deadline) - new Date(b.deadline);
-  });
+  const handleDeleteTask = (taskId) => {
+    setFilteredTasksSorted(prev => prev.filter(task => task.id != taskId));
+    localStorage.removeItem('taskToDelete');
+  };
+
+  // ✅ Move event listener to useEffect with cleanup
+  useEffect(() => {
+    const handler = (e) => handleDeleteTask(e.detail.id);
+    window.addEventListener('deleteTask', handler);
+    return () => window.removeEventListener('deleteTask', handler);
+  }, []);
 
   return (
     <>
@@ -96,7 +113,7 @@ export default function TasksTable() {
         </button>
       </div>
 
-      {filteredTasks.length < 1 ? (
+      {filteredTasksSorted.length < 1 ? (
         searchTerm.length < 1
           ? "Teil pole ühtegi ülesannet, võite luua uue ülesande"
           : "Teie otsingule ei vastanud ühtegi ülesannet"

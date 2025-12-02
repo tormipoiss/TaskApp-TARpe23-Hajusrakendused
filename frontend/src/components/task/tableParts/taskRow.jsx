@@ -14,6 +14,16 @@ export default function TaskRow({task}) {
     }
   };
 
+  const deleteTask = async () => {
+    try { 
+      const response = await axios.delete(import.meta.env.VITE_BACKEND_URL + `/api/v1/tasks/${task.id}`);
+      return response.data.description;
+    } catch (error) {
+      console.log("Failed to fetch task:", error);
+      return null; // Return fallback
+    }
+  };
+
   const handleUpdate = async () => {
     const taskDescription = await fetchTaskDescription();
     let taskDeadlineSliced = null;
@@ -28,6 +38,13 @@ export default function TaskRow({task}) {
     navigate("/updateTask", { replace: true });
   };
 
+  const handleDelete = async () => {
+    await deleteTask();
+    localStorage.setItem("taskToDelete", task.id);
+    
+    window.dispatchEvent(new CustomEvent('deleteTask', { detail: { id: task.id } }));
+  };
+
   return (
     <tr>
       <td>{task.title}</td>
@@ -35,10 +52,10 @@ export default function TaskRow({task}) {
         <button className="view-btn" onClick={() => alert(`View ${task.title}`)}>
           Vaata
         </button>
-        <button className="update-btn" onClick={handleUpdate}>  {/* Use named handler */}
+        <button className="update-btn" onClick={handleUpdate}>
           Uuenda
         </button>
-        <button className="delete-btn" onClick={() => alert(`Delete ${task.title}`)}>
+        <button className="delete-btn" onClick={handleDelete}>
           Kustuta
         </button>
         <button className="share-btn" onClick={() => alert(`Share ${task.title}`)}>
