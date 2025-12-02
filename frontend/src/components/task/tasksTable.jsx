@@ -8,8 +8,6 @@ import {
 export default function TasksTable() {
   const [tasks, setTasks] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [noTasksContent, setNoTasksContent] = useState("");
-  const [rows, setRows] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,29 +16,6 @@ export default function TasksTable() {
         const response = (await axios.get(import.meta.env.VITE_BACKEND_URL + `/api/v1/tasks/getbyuser/${localStorage.getItem('username')}`));
         const fetchedTasks = response.data
         setTasks(fetchedTasks);
-
-//         setTasks([
-//           {
-//     "id": 3,
-//     "username": "some text",
-//     "title": "CAB",
-//     "description": "some text"
-// },
-//           {
-//     "id": 1,
-//     "username": "some text",
-//     "title": "ACB",
-//     "description": "some text",
-//     "deadline": "2018-02-10T09:30Z"
-// },
-//           {
-//     "id": 2,
-//     "username": "some text",
-//     "title": "BCA",
-//     "description": "some text",
-//     "deadline": "2026-02-10T09:30Z"
-// }
-        // ])
       } catch (error) {
         console.log("Failed to fetch tasks:", error);
       }
@@ -48,38 +23,16 @@ export default function TasksTable() {
     fetchTasks().then(() => console.log("Success fetching tasks"));
   }, []);
 
-  useEffect(() => {
-    // Filter tasks by search term (case insensitive)
-    const filteredTasks = tasks.filter(task =>
-      task.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+  const filteredTasks = tasks.filter(task =>
+    task.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
-    // Sort filtered tasks by deadline:
-  // - Tasks with deadline sorted ascending by date
-  // - Tasks with no deadline pushed to bottom
-  filteredTasks.sort((a, b) => {
-    if (!a.deadline && !b.deadline) return 0; // both no deadline
-    if (!a.deadline) return 1; // a no deadline, b with deadline -> a after b
-    if (!b.deadline) return -1; // b no deadline, a with deadline -> b after a
-    return new Date(a.deadline) - new Date(b.deadline); // oldest first
+  const filteredTasksSorted = [...filteredTasks].sort((a, b) => {
+    if (!a.deadline && !b.deadline) return 0;
+    if (!a.deadline) return 1;
+    if (!b.deadline) return -1;
+    return new Date(a.deadline) - new Date(b.deadline);
   });
-  
-    const newRows = filteredTasks.map(task => (
-    <TaskRow key={task.id} task={task} />
-  ));
-
-  setRows(newRows);
-
-  if (filteredTasks.length < 1) {
-    setNoTasksContent(
-      searchTerm.length < 1
-        ? "Teil pole ühtegi ülesannet, võite luua uue ülesande"
-        : "Teie otsingule ei vastanud ühtegi ülesannet"
-    );
-  } else {
-    setNoTasksContent("");
-  }
-  }, [tasks, searchTerm]);
 
   return (
     <>
@@ -138,13 +91,16 @@ export default function TasksTable() {
           onChange={e => setSearchTerm(e.target.value)}
         />
 
-
         <button className="create-btn" onClick={() => navigate("/createTask", { replace: true })}>
           Loo ülesanne
         </button>
       </div>
 
-      {noTasksContent}
+      {filteredTasks.length < 1 ? (
+        searchTerm.length < 1
+          ? "Teil pole ühtegi ülesannet, võite luua uue ülesande"
+          : "Teie otsingule ei vastanud ühtegi ülesannet"
+      ) : null}
 
       <table>
         <thead>
@@ -153,7 +109,11 @@ export default function TasksTable() {
             <th>Juhtnupud</th>
           </tr>
         </thead>
-        <tbody>{rows}</tbody>
+        <tbody>
+          {filteredTasksSorted.map(task => (
+            <TaskRow key={task.id} task={task} />
+          ))}
+        </tbody>
       </table>
     </>
   );

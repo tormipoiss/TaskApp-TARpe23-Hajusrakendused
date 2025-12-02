@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import "./taskForm.css";
-async function tryCreateTask(username, title, description, deadline){
+async function tryUpdateTask(id, username, title, description, deadline){
     try {
-        const response = (await axios.post(import.meta.env.VITE_BACKEND_URL + "/api/v1/tasks",{ username, title, description, deadline }));
+        const response = (await axios.put(import.meta.env.VITE_BACKEND_URL + `/api/v1/tasks/${id}`,{ username, title, description, deadline }));
         return response;
     } catch (error) {
     if (error.response?.data?.error) {
@@ -14,39 +14,54 @@ async function tryCreateTask(username, title, description, deadline){
     return { status: 500, error: "Server error. Please try again later." };
     }
 }
-function CreateTask() {
+function UpdateTask() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [deadline, setDeadline] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const storedTitle = localStorage.getItem('taskToUpdateTitle');
+    const storedDescription = localStorage.getItem('taskToUpdateDescription');
+    const storedDeadline = localStorage.getItem('taskToUpdateDeadline');
+    
+    if (storedTitle) setTitle(storedTitle);
+    if (storedDescription) setDescription(storedDescription);
+    if (storedDeadline) setDeadline(storedDeadline);
+  }, []);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setError("");
     const storedUsername = localStorage.getItem('username');
+    const storedTaskToUpdate = localStorage.getItem('taskToUpdate');
     if (!storedUsername) {
       setError("Sa ei saa luua ülesannet, sest pole sisse logitud!");
+      return;
+    }
+    if (!storedTaskToUpdate) {
+      setError("Sa ei vajutanud ülesande uuendamise nuppu siia lehel tulles!");
       return;
     }
     if (!title || !description) {
       setError("Tiitel või kirjeldus on puudu!");
       return;
     }
-    tryCreateTask(storedUsername, title, description, deadline).then((result) => {
+    tryUpdateTask(storedTaskToUpdate, storedUsername, title, description, deadline).then((result) => {
       if (result.error) {
         if (result.error == "Missing required fields: title / description / username") {
             setError("Tiitel või kirjeldus on puudu");
             return;
         }
         else {
-            setError("Kuupäeva väli on valesti vormistatud");
+            setError("Ülesanne mida uuendada ei leitud");
             return;
         }
       }
       else {
         // window.dispatchEvent(new Event("storage"));
-        confirm("Ülesanne edukalt loodud!");
+        confirm("Ülesanne edukalt uuendatud!");
         navigate("/");
       }
     });
@@ -54,7 +69,7 @@ function CreateTask() {
 
   return (
     <div className="container">
-      <h2>Loo ülesanne</h2>
+      <h2>Uuenda ülesanne</h2>
       <form onSubmit={handleSubmit}>
         <span>Tiitel: </span>
         <input
@@ -80,10 +95,10 @@ function CreateTask() {
           onChange={(e) => setDeadline(e.target.value)}
         />
         {error && <p className="error">{error}</p>}
-        <button type="submit">Loo ülesanne</button>
+        <button type="submit">Uuenda ülesanne</button>
       </form>
     </div>
   );
 }
 
-export default CreateTask;
+export default UpdateTask;

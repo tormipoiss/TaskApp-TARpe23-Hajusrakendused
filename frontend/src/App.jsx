@@ -3,6 +3,7 @@ import FilterableTasksTable from './components/task/filterableTasksTable';
 import Login from './components/auth/login.jsx';
 import Register from './components/auth/register.jsx';
 import CreateTask from './components/task/createTask.jsx';
+import UpdateTask from './components/task/updateTask.jsx';
 import Profile from './components/profile/profileModal.jsx';
 import {
   BrowserRouter,
@@ -86,6 +87,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/createTask" element={<CreateTask />} />
+        <Route path="/updateTask" element={<UpdateTask />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
