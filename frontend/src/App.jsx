@@ -6,6 +6,7 @@ import CreateTask from './components/task/createTask.jsx';
 import UpdateTask from './components/task/updateTask.jsx';
 import Profile from './components/profile/profileModal.jsx';
 import TaskDetails from './components/task/taskDetails.jsx';
+import TaskShare from './components/task/shareTask.jsx';
 import {
   BrowserRouter,
   Routes,
@@ -91,6 +92,7 @@ function App() {
         <Route path="/updateTask" element={<UpdateTask />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/details" element={<TaskDetails />} />
+        <Route path="/share" element={<TaskShare />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

@@ -1,38 +1,9 @@
 export default async (db) => {
-    const [TiitTask, taskTiitCreated] = await db.Tasks.findOrCreate({
-        where: { username: "Tiit" },
-        defaults: { 
-            username: "Tiit",
-            title:"TiitTask",
-            description:"asdsadasasdasdas",
-            deadline: new Date("2025-11-18T00:00:00.000Z"),
-        }
-    });
-    const [TiitTask2, taskTiitCreated2] = await db.Tasks.findOrCreate({
-        where: { username: "Tiit" },
-        defaults: { 
-            username: "Tiit",
-            title:"TiitTask2",
-            description:"asdsadasasdasdas",
-            deadline: new Date("2025-11-18T00:00:00.000Z"),
-        }
-    });
-    console.log("TiitTask -> With Tiit owner created", taskTiitCreated)
-    const [TormiTask, taskTormiCreated] = await db.Tasks.findOrCreate({
-        where: { username: "Tormi" },
-        defaults: { 
-            username: "Tormi",
-            title:"TormiTask",
-            description:"asdsadasasdasdas",
-            deadline: new Date("2025-11-18T00:00:00.000Z"),
-        }
-    });
-    console.log("TormiTask -> With Tormi owner created", taskTormiCreated)
     const [Tiit, userCreated] = await db.Users.findOrCreate({
         where: { username: "Tiit" },
         defaults: {
             username: "Tiit",
-            password: "$2b$10$XAfZIvRHT6drLqZ7JiGMwOBnbuTMg67BSm.2EJNOA1evILtnWu2i."
+            password: "$2b$10$Xi4FCzwU55BXuOPO3Y14NOJatQxoV.QvMkgKKHM3JZJqAhxIkiDFC"
         }
     });
     console.log("Tiit created", userCreated)
@@ -52,17 +23,38 @@ export default async (db) => {
         }
     });
     console.log("Tormi2 created", tormiCreated2)
-    
-/*
-    const [Share, shareCreated] = await db.Shares.findOrCreate({
-        //where: { id: 1 },
-        defaults: {
-            TaskId: MegaTask.id,
-            UserUsername: Tiit.username,
-            sharedUser: Tormi.username,
+
+    const [TiitTask, taskTiitCreated] = await db.Tasks.findOrCreate({
+        where: { 
+            username: "Tiit", 
+            title: "TiitTask" // Include title in the search!
+        },
+        defaults: { 
+            description:"asdsadasasdasdas",
+            deadline: new Date("2025-11-18T00:00:00.000Z"),
         }
-    })
-    console.log("Share created", shareCreated);
-    console.dir(Share.get({plain:true}), {depth: null});
-    */
+    });
+    console.log("TiitTask created:", taskTiitCreated);
+
+    const [TiitTask2, taskTiitCreated2] = await db.Tasks.findOrCreate({
+        where: { 
+            username: "Tiit", 
+            title: "TiitTask2" // Different title!
+        },
+        defaults: { 
+            description:"asdsadasasdasdas",
+            deadline: new Date("2025-11-18T00:00:00.000Z"),
+        }
+    });
+    console.log("TiitTask2 created:", taskTiitCreated2);
+    const [TormiTask, taskTormiCreated] = await db.Tasks.findOrCreate({
+        where: { username: "Tormi" },
+        defaults: { 
+            username: "Tormi",
+            title:"TormiTask",
+            description:"asdsadasasdasdas",
+            deadline: new Date("2025-11-18T00:00:00.000Z"),
+        }
+    });
+    console.log("TormiTask -> With Tormi owner created", taskTormiCreated)
 }

@@ -84,4 +84,13 @@ const deleteById = async (req, res) => {
     return res.status(204).send();
 }
 
-export default { getById, create, updatePassword, deleteById,get }
+const getAllUsers = async (req,res)=>{
+    const users = await userService.getAllUsers();
+    if(users.count == 0){
+        return res.status(404).send({ error: "No users were found" });
+    }
+    return res.json(users);
+}
+
+
+export default { getById, create, updatePassword, deleteById, get, getAllUsers }

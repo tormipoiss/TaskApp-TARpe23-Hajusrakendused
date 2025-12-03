@@ -217,6 +217,47 @@
             ]
         },
         "/users": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "All users successfully returned",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/UserListItem"
+                            }
+                        },
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "username": "some text"
+                                },
+                                {
+                                    "username": "some text"
+                                }
+                            ]
+                        }
+                    },
+                    "404": {
+                        "description": "No users were found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        },
+                        "examples": {
+                            "application/json": {
+                                "error": "No users were found"
+                            }
+                        }
+                    }
+                },
+                "summary": "Get all users"
+            },
             "post": {
                 "consumes": [
                     "application/json"
@@ -510,13 +551,13 @@
                         }
                     },
                     "409": {
-                        "description": "Task has already been shared with chosen user",
+                        "description": "Task has already been shared with chosen user or user to be shared with cannot be the same as user who wants to share",
                         "schema": {
                             "$ref": "#/definitions/Error"
                         },
                         "examples": {
                             "application/json": {
-                                "error": "Task already shared with this user"
+                                "error": "Task has already been shared with chosen user or user to be shared with cannot be the same as user who wants to share"
                             }
                         }
                     }
