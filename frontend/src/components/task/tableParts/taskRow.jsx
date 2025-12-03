@@ -28,11 +28,19 @@ export default function TaskRow({task}) {
     navigate("/updateTask", { replace: true });
   };
 
+  const handleDetails = async () => {
+    const taskDescription = await fetchTaskDescription();
+    localStorage.setItem("taskTitle", task.title);
+    localStorage.setItem("taskDescription", taskDescription || '');
+    localStorage.setItem("taskDeadline", task.deadline || '');
+    navigate("/details", { replace: true });
+  };
+
   return (
     <tr>
       <td>{task.title}</td>
       <td>
-        <button className="view-btn" onClick={() => alert(`View ${task.title}`)}>
+        <button className="view-btn" onClick={handleDetails}>
           Vaata
         </button>
         <button className="update-btn" onClick={handleUpdate}>  {/* Use named handler */}
