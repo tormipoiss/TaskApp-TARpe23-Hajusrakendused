@@ -28,7 +28,11 @@ function UpdateTask() {
     
     if (storedTitle) setTitle(storedTitle);
     if (storedDescription) setDescription(storedDescription);
-    if (storedDeadline) setDeadline(storedDeadline);
+    if (storedDeadline) {
+      console.log("Stored deadline:", storedDeadline);
+      const date = new Date(storedDeadline.endsWith('Z') ? storedDeadline : storedDeadline + 'Z');
+      setDeadline(toInputDateTime(date));
+    }
   }, []);
 
   const handleSubmit = (e) => {
@@ -99,6 +103,19 @@ function UpdateTask() {
       </form>
     </div>
   );
+}
+
+function toInputDateTime(date) {
+  // Pad single-digit numbers with a leading zero
+  const pad = (number) => (number < 10 ? `0${number}` : number);
+
+  const year = date.getFullYear();
+  const month = pad(date.getMonth() + 1); // getMonth() is zero-based
+  const day = pad(date.getDate());
+  const hours = pad(date.getHours());
+  const minutes = pad(date.getMinutes());
+
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
 }
 
 export default UpdateTask;

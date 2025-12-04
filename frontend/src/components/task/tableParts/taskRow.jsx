@@ -16,7 +16,7 @@ export default function TaskRow({task}) {
 
   const deleteTask = async () => {
     try { 
-      const response = await axios.delete(import.meta.env.VITE_BACKEND_URL + `/api/v1/tasks/${task.id}`);
+      const response = await axios.delete(`/api/v1/tasks/${task.id}`);
       return response.data.description;
     } catch (error) {
       console.log("Failed to fetch task:", error);
@@ -38,6 +38,13 @@ export default function TaskRow({task}) {
     navigate("/updateTask", { replace: true });
   };
 
+  const handleDetails = async () => {
+    const taskDescription = await fetchTaskDescription();
+    localStorage.setItem("taskTitle", task.title);
+    localStorage.setItem("taskDescription", taskDescription || '');
+    localStorage.setItem("taskDeadline", task.deadline || '');
+    navigate("/details", { replace: true });
+    };
   const handleDelete = async () => {
     await deleteTask();
     localStorage.setItem("taskToDelete", task.id);
@@ -49,7 +56,7 @@ export default function TaskRow({task}) {
     <tr>
       <td>{task.title}</td>
       <td>
-        <button className="view-btn" onClick={() => alert(`View ${task.title}`)}>
+        <button className="view-btn" onClick={handleDetails}>
           Vaata
         </button>
         <button className="update-btn" onClick={handleUpdate}>
