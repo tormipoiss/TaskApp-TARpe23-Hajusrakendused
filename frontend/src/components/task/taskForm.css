@@ -1,3 +1,86 @@
+.form-group {
+  width: 25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem; 
+}
+
+.form-group label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin-left: 4px;
+}
+
+.input-field-small-small {
+  padding: 14px 20px;
+  font-size: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  outline: none;
+  transition: all 0.3s ease;
+  width: 20rem;
+  max-width: 100%;
+  margin-bottom: 12px;
+  margin-left: 1rem;
+}
+.update-new-btn {
+  background-color: #2196F3;
+  color: #FFFFFF;
+  padding: 4px;
+  border-radius:3px;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  width: 25rem;
+  max-width: 100%;
+  margin-right: 12px;
+  font-size: 16px;
+  padding: 10px 10px;
+  margin-left: 0rem;
+}
+.create-btn {
+  background-color: #2196F3;
+  color: #FFFFFF;
+  padding: 4px;
+  border-radius:3px;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  width: 450px;
+  max-width: 100%;
+  margin-right: 12px;
+  font-size: 16px;
+  padding: 10px 10px;
+}
+.search-input {
+  padding: 14px 20px;
+  font-size: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  outline: none;
+  transition: all 0.3s ease;
+  width: 410px;
+  max-width: 100%;
+  margin-right: 12px;
+}
+
+.search-input:focus {
+  border-color: #667eea;
+  box-shadow: 
+    0 0 0 3px rgba(102, 126, 234, 0.2),
+    0 8px 25px rgba(102, 126, 234, 0.15);
+  transform: translateY(-1px);
+}
+
+.search-input::placeholder {
+  color: #94a3b8;
+  font-weight: 500;
+}
 .error {
   color: red;
   font-size: 14px;

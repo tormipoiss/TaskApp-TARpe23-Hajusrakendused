@@ -1,3 +1,18 @@
+.input-field {
+  padding: 14px 20px;
+  font-size: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  outline: none;
+  transition: all 0.3s ease;
+  width: 410px;
+  max-width: 100%;
+  margin-right: 12px;
+  margin-bottom: 12px;
+}
 .login-container {
   min-height: 100vh;
   display: flex;
