@@ -52,6 +52,11 @@ export default function TaskRow({task}) {
     window.dispatchEvent(new CustomEvent('deleteTask', { detail: { id: task.id } }));
   };
 
+  const handleShare = async () => {
+    localStorage.setItem("taskToShare", task.id);
+    navigate("/share", { replace: true });
+  };
+
   return (
     <tr>
       <td>{task.title}</td>
@@ -65,7 +70,7 @@ export default function TaskRow({task}) {
         <button className="delete-btn" onClick={handleDelete}>
           Kustuta
         </button>
-        <button className="share-btn" onClick={() => alert(`Share ${task.title}`)}>
+        <button className="share-btn" onClick={handleShare}>
           Jaga
         </button>
       </td>

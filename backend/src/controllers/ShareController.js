@@ -10,6 +10,9 @@ const create = async (req, res) => {
     } catch (error) {
         return res.status(400).send({ error: "Missing required fields: taskOwner / taskId / sharedWith" });
     }
+    if (req.body.taskOwner === req.body.sharedWith) {
+        return res.status(409).send({ error: "User to share with cant be same as the user who wants to share" });
+    }
     const task = await taskService.getTask(req.body.taskId);
     if (!task) {
         return res.status(404).send({ error: "Task not found" });

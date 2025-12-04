@@ -28,4 +28,8 @@ export const userService = {
         });
         return deletedCount > 0 ? true : false;
     },
+    getAllUsers: async () => {
+        const users = await Users.findAll({attributes: ['username']})
+        return users ? users: [];
+    },
 }
