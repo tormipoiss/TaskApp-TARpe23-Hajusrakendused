@@ -19,16 +19,44 @@ import { useState, useEffect } from 'react';
 
 function Logout() {
   const navigate = useNavigate();
+    const [modal, setModal] = useState({
+      show: false,
+      message: "",
+    });
+    const closeModal = () => {
+      setModal({ 
+        show: false, 
+        message: ""
+      });
+      localStorage.removeItem("username");
+      window.dispatchEvent(new Event("storage"));
+      navigate("/login", { replace: true });
+    };
 
   useEffect(() => {
-    localStorage.removeItem("username");
-    // re-render
-    window.dispatchEvent(new Event("storage"));
-    alert("Väljalogimine õnnestus!");
-    navigate("/login", { replace: true });
+    setModal({
+      show: true,
+      message: "Väljalogimine õnnestus!",
+    });
   }, [navigate]);
 
-  return <div>Logging out...</div>;
+  return <div>
+    {modal.show && (
+        <>
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3 className="modal-title modal-success">Ok</h3>
+            <p className="modal-success">
+              {modal.message}
+            </p>
+            <button className="modal-close-btn" onClick={closeModal}>
+              Sulge
+            </button>
+          </div>
+        </div>
+        </>
+      )}
+    </div>;
 }
 
 function ProtectedRoute({ children }) {

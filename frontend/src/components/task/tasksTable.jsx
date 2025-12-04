@@ -115,12 +115,6 @@ export default function TasksTable() {
           font-size: 0.9em;
           color: white;
         }
-        .create-btn {
-          background-color: #2196F3;
-          color: #FFFFFF;
-          padding: 4px;
-          border-radius:3px;
-        }
         .view-btn {
           background-color: #009688;
         }
@@ -138,13 +132,13 @@ export default function TasksTable() {
 
       <div>
         <input
-          style={{ fontSize: '16px', marginRight: '10px' }}
+          className="search-input"
           type="text"
           placeholder="Otsi ülesandeid..."
           value={searchTerm}
           onChange={e => setSearchTerm(e.target.value)}
         />
-
+        <br></br>
         <button className="create-btn" onClick={() => navigate("/createTask", { replace: true })}>
           Loo ülesanne
         </button>

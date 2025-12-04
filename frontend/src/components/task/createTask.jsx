@@ -70,32 +70,38 @@ function CreateTask() {
   return (
     <div className="container">
       <h2>Loo ülesanne</h2>
-      <form onSubmit={handleSubmit}>
-        <span>Tiitel: </span>
+      <form onSubmit={handleSubmit} className="form-group">
+        <label for="title">Tiitel: </label>
         <input
+          className="input-field-small-small"
+          id="title"
           type="text"
           placeholder="Tiitel"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
         <br />
-        <span>Kirjeldus: </span>
+        <label for="description">Kirjeldus: </label>
         <input
+          id="description"
+          className="input-field-small-small"
           type="text"
           placeholder="Kirjeldus"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
         <br />
-        <span>Tähtaeg (Valikuline): </span>
+        <label for="deadline">Tähtaeg (Valikuline): </label>
         <input
+          id="deadline"
+          className="input-field-small-small"
           type="datetime-local"
           placeholder="Tähtaeg"
           value={deadline}
           onChange={(e) => setDeadline(e.target.value)}
         />
         {error && <p className="error">{error}</p>}
-        <button type="submit">Loo ülesanne</button>
+        <button type="submit" className="update-new-btn">Loo ülesanne</button>
       </form>
       {modal.show && (
         <>

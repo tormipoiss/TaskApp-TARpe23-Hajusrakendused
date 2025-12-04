@@ -19,6 +19,21 @@ function Register() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const [modal, setModal] = useState({
+      show: false,
+      message: "",
+    });
+  const closeModal = () => {
+      setModal({ 
+        show: false, 
+        message: ""
+      });
+      localStorage.setItem("username",username);
+      window.dispatchEvent(new Event("storage"));
+      navigate("/");
+    };
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setError("");
@@ -39,10 +54,10 @@ function Register() {
         setError("Serveri viga. Proovi hiljem uuesti.");
         return;
       }
-      localStorage.setItem("username",username);
-      window.dispatchEvent(new Event("storage"));
-      confirm("Registreerimine õnnestus!");
-      navigate("/");
+      setModal({
+        show: true,
+        message: "Registreerimine õnnestus!",
+      })
     });
   };
 
@@ -51,12 +66,15 @@ function Register() {
       <h2>Registeeri</h2>
       <form onSubmit={handleSubmit}>
         <input
+          className="input-field"
           type="text"
           placeholder="Kasutajanimi"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
+        <br></br>
         <input
+          className="input-field"
           type="password"
           placeholder="Parool"
           value={password}
@@ -65,6 +83,21 @@ function Register() {
         {error && <p className="error">{error}</p>}
         <button type="submit">Registeeri</button>
       </form>
+      {modal.show && (
+        <>
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3 className="modal-title modal-success">Ok</h3>
+            <p className="modal-success">
+              {modal.message}
+            </p>
+            <button className="modal-close-btn" onClick={closeModal}>
+              Sulge
+            </button>
+          </div>
+        </div>
+        </>
+      )}
     </div>
   );
 }

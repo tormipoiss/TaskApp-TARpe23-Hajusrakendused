@@ -136,7 +136,7 @@ function Profile() {
   
   const confirmDeleteAccount = async () => {
     try{
-        const response = (await axios.delete(`/api/v1/users/${username}`));
+        const response = (await axios.delete(import.meta.env.VITE_BACKEND_URL + `/api/v1/users/${username}`));
         setModal({
             show: true,
             message: "Teie konto on edukalt kustutatud.",
@@ -148,7 +148,7 @@ function Profile() {
             localStorage.removeItem("username");
             window.dispatchEvent(new Event("storage"));
             navigate("/register")
-        }, 3000);
+        }, 2000);
     }
     catch(error){
         let msg = undefined;
@@ -205,7 +205,7 @@ function Profile() {
                 <h3 className="modal-title">Parooli Muutmine</h3>
                 
                 <div className="password-form">
-                  <div className="form-group">
+                  <div className="form-group2">
                     <label htmlFor="oldPassword">Vana parool:</label>
                     <input
                       id="oldPassword"
@@ -213,13 +213,13 @@ function Profile() {
                       name="oldPassword"
                       value={modal.passwordForm.oldPassword}
                       onChange={handlePasswordInputChange}
-                      className="form-input"
+                      className="input-field-small"
                       placeholder="Sisestage oma vana parool"
                       autoComplete="current-password"
                     />
                   </div>
 
-                  <div className="form-group">
+                  <div className="form-group2">
                     <label htmlFor="newPassword">Uus parool:</label>
                     <input
                       id="newPassword"
@@ -227,13 +227,13 @@ function Profile() {
                       name="newPassword"
                       value={modal.passwordForm.newPassword}
                       onChange={handlePasswordInputChange}
-                      className="form-input"
+                      className="input-field-small"
                       placeholder="Sisestage uus parool"
                       autoComplete="new-password"
                     />
                   </div>
 
-                  <div className="form-group">
+                  <div className="form-group2">
                     <label htmlFor="confirmPassword">Kinnitage uus parool:</label>
                     <input
                       id="confirmPassword"
@@ -241,7 +241,7 @@ function Profile() {
                       name="confirmPassword"
                       value={modal.passwordForm.confirmPassword}
                       onChange={handlePasswordInputChange}
-                      className="form-input"
+                      className="input-field-small"
                       placeholder="Kinnitage uus parool"
                       autoComplete="new-password"
                     />
