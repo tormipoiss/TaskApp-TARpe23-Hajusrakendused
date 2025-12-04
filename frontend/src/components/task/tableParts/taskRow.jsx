@@ -6,6 +6,9 @@ export default function TaskRow({task}) {
   const navigate = useNavigate();
   const [styleDeadline, setStyleDeadline] = useState(null);
 
+  const currentUser = localStorage.getItem('username');
+  const isShared = task.username !== currentUser;
+
   const fetchTaskDescription = async () => {
     try { 
       const response = await axios.get(`/api/v1/tasks/${task.id}`);
@@ -27,6 +30,7 @@ export default function TaskRow({task}) {
     localStorage.setItem("taskToUpdateTitle", task.title);
     localStorage.setItem("taskToUpdateDescription", taskDescription || '');
     localStorage.setItem("taskToUpdateDeadline", taskDeadlineSliced || '');
+    localStorage.setItem("taskToUpdateOwner", task.username || '');
     navigate("/updateTask", { replace: true });
   };
 
@@ -45,6 +49,7 @@ export default function TaskRow({task}) {
 
   const handleShare = async () => {
     localStorage.setItem("taskToShare", task.id);
+    localStorage.setItem("taskToShareOwner", task.username);
     navigate("/share", { replace: true });
   };
     useEffect(() => {
@@ -60,7 +65,22 @@ export default function TaskRow({task}) {
 
   return (
     <tr>
-      <td>{task.title}</td>
+      <td>
+        {task.title}
+        <br />
+        {/* Conditional Tag */}
+        {isShared && (
+          <span className="shared-tag" style={{ 
+              backgroundColor: '#e0f2f1', 
+              color: '#00695c',
+              padding: '2px 8px',
+              borderRadius: '12px',
+              fontSize: '0.8em'
+          }}>
+            {task.username} jagas sulle
+          </span>
+        )}
+      </td>
       <td>{styleDeadline}</td>
       <td>
         <button className="view-btn" onClick={handleDetails}>

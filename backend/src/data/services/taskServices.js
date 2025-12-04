@@ -1,5 +1,6 @@
 import { where } from "sequelize";
 import { db } from "../dbConfig.js";
+import { Op } from 'sequelize';
 const { Tasks, Users } = db;
 
 export const taskService = {
@@ -8,9 +9,30 @@ export const taskService = {
         const fresh = await Tasks.findByPk(created.id);
         return fresh.get({ plain: true });
     },
-    getAllTasks: async(username)=>{
-        const tasks = await Tasks.findAll({where:{username}, attributes: ['id', 'title', 'deadline']})
-        return tasks ? tasks: [];
+    // getAllTasks: async(username)=>{
+    //     const tasks = await Tasks.findAll({where:{username}, attributes: ['id', 'title', 'deadline']})
+    //     return tasks ? tasks: [];
+    // },
+    getAllTasks: async(username) => {
+        const tasks = await Tasks.findAll({
+            where: {
+                [Op.or]: [
+                    { username: username }, // Tasks owned by user
+                    { '$SharedWith.username$': username } // Tasks shared with user
+                ]
+            },
+            include: [{
+                model: db.Users,
+                as: 'SharedWith',
+                attributes: [],
+                through: { attributes: [] },
+                required: false // LEFT JOIN (important for owned tasks without shares)
+            }],
+            attributes: ['id', 'title', 'deadline', 'username'],
+            group: ['Task.id'] // Prevent duplicate rows if multiple shares exist
+        });
+        
+        return tasks;
     },
     getTask: async (id) => {
         const task = await Tasks.findOne({
