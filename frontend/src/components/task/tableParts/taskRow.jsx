@@ -1,22 +1,14 @@
 import { useNavigate } from 'react-router-dom';
+import {useEffect, useState} from "react";
 import axios from "axios";
 
 export default function TaskRow({task}) {
   const navigate = useNavigate();
+  const [styleDeadline, setStyleDeadline] = useState(null);
 
   const fetchTaskDescription = async () => {
     try { 
       const response = await axios.get(`/api/v1/tasks/${task.id}`);
-      return response.data.description;
-    } catch (error) {
-      console.log("Failed to fetch task:", error);
-      return null; // Return fallback
-    }
-  };
-
-  const deleteTask = async () => {
-    try { 
-      const response = await axios.delete(`/api/v1/tasks/${task.id}`);
       return response.data.description;
     } catch (error) {
       console.log("Failed to fetch task:", error);
@@ -46,7 +38,6 @@ export default function TaskRow({task}) {
     navigate("/details", { replace: true });
     };
   const handleDelete = async () => {
-    await deleteTask();
     localStorage.setItem("taskToDelete", task.id);
     
     window.dispatchEvent(new CustomEvent('deleteTask', { detail: { id: task.id } }));
@@ -56,10 +47,21 @@ export default function TaskRow({task}) {
     localStorage.setItem("taskToShare", task.id);
     navigate("/share", { replace: true });
   };
+    useEffect(() => {
+      if(styleDeadline === null){
+          if(task.deadline == null){
+            setStyleDeadline("Pole");
+            return;
+          }
+          const date = new Date(task.deadline);
+          setStyleDeadline(date.toLocaleString());
+      }
+    }, []);
 
   return (
     <tr>
       <td>{task.title}</td>
+      <td>{styleDeadline}</td>
       <td>
         <button className="view-btn" onClick={handleDetails}>
           Vaata

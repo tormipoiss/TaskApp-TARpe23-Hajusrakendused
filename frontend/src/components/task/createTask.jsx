@@ -4,7 +4,7 @@ import axios from "axios";
 import "./taskForm.css";
 async function tryCreateTask(username, title, description, deadline){
     try {
-        const response = (await axios.post("/api/v1/tasks",{ username, title, description, deadline }));
+        const response = (await axios.post(import.meta.env.VITE_BACKEND_URL + "/api/v1/tasks",{ username, title, description, deadline }));
         return response;
     } catch (error) {
     if (error.response?.data?.error) {
@@ -20,6 +20,17 @@ function CreateTask() {
   const [deadline, setDeadline] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const [modal, setModal] = useState({
+    show: false,
+    message: "",
+  });
+  const closeModal = () => {
+    setModal({ 
+      show: false, 
+      message: ""
+    });
+    navigate('/');
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -46,8 +57,12 @@ function CreateTask() {
       }
       else {
         // window.dispatchEvent(new Event("storage"));
-        confirm("Ülesanne edukalt loodud!");
-        navigate("/");
+        //confirm("Ülesanne edukalt loodud!");
+        setModal({
+          show: true,
+          message: "Ülesanne edukalt loodud!"
+        });
+        
       }
     });
   };
@@ -82,6 +97,21 @@ function CreateTask() {
         {error && <p className="error">{error}</p>}
         <button type="submit">Loo ülesanne</button>
       </form>
+      {modal.show && (
+        <>
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3 className="modal-title modal-success">Ok</h3>
+            <p className="modal-success">
+              {modal.message}
+            </p>
+            <button className="modal-close-btn" onClick={closeModal}>
+              Sulge
+            </button>
+          </div>
+        </div>
+        </>
+      )}
     </div>
   );
 }

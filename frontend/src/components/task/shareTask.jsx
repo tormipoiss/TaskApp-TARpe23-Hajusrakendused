@@ -5,7 +5,7 @@ import "./taskForm.css";
 
 async function tryShareTask(taskOwner, taskId, sharedWith) {
     try {
-        const response = (await axios.post("/api/v1/shares",{ taskOwner, taskId, sharedWith }));
+        const response = (await axios.post(import.meta.env.VITE_BACKEND_URL + "/api/v1/shares",{ taskOwner, taskId, sharedWith }));
         return response;
     } catch (error) {
     if (error.response?.data?.error) {
@@ -18,7 +18,7 @@ async function tryShareTask(taskOwner, taskId, sharedWith) {
 
 async function tryGetUsers() {
     try {
-        const response = await axios.get("/api/v1/users");
+        const response = await axios.get(import.meta.env.VITE_BACKEND_URL + "/api/v1/users");
         const userStrings = response.data.map(user => user.username);
         return userStrings;
     } catch (error) {
@@ -35,6 +35,17 @@ function ShareTask() {
   const [error, setError] = useState("");
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
+    const [modal, setModal] = useState({
+      show: false,
+      message: "",
+    });
+    const closeModal = () => {
+      setModal({ 
+        show: false, 
+        message: ""
+      });
+      navigate('/');
+    };
 
   useEffect(() => {
     tryGetUsers().then((result) => {
@@ -99,8 +110,10 @@ function ShareTask() {
         }
       }
       else {
-        confirm(`Ülesanne edukalt jagatud kasutajaga: ${userToShareWith}`);
-        navigate("/");
+        setModal({
+          show: true,
+          message: `Ülesanne edukalt jagatud kasutajaga: ${userToShareWith}`
+        });
       }
     });
   };
@@ -128,7 +141,23 @@ function ShareTask() {
         {error && <p className="error">{error}</p>}
         <button type="submit">Jaga ülesanne</button>
       </form>
+      {modal.show && (
+        <>
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3 className="modal-title modal-success">Ok</h3>
+            <p className="modal-success">
+              {modal.message}
+            </p>
+            <button className="modal-close-btn" onClick={closeModal}>
+              Sulge
+            </button>
+          </div>
+        </div>
+        </>
+      )}
     </div>
+    
   );
 }
 
