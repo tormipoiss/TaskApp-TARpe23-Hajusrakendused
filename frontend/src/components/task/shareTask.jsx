@@ -56,6 +56,11 @@ function ShareTask() {
       setError("Sa ei saa jagada ülesannet, sest pole sisse logitud!");
       return;
     }
+    const storedTaskOwner = localStorage.getItem('taskToShareOwner');
+    if (!storedTaskOwner) {
+      setError("Sa ei saa jagada ülesannet, sest pole mälus ülesande omanikku!");
+      return;
+    }
     const storedTaskID = localStorage.getItem('taskToShare');
     if (!storedTaskID) {
       setError("Sa ei saa jagada ülesannet, sest ei leitud ülesannet mida jagada!");
@@ -65,8 +70,8 @@ function ShareTask() {
       setError("Kasutaja kellega jagada on puudu!");
       return;
     }
-    console.log("Try share task:", storedUsername, storedTaskID, userToShareWith)
-    tryShareTask(storedUsername, storedTaskID, userToShareWith).then((result) => {
+    
+    tryShareTask(storedTaskOwner, storedTaskID, userToShareWith).then((result) => {
       if (result.error) {
         if (result.error == "Missing required fields: taskOwner / taskId / sharedWith") {
             setError("Puuduvad vajalikud väljad: Sinu kasutajanimi, Ülesanne ID või kasutaja kellega jagada nimi");
@@ -81,11 +86,11 @@ function ShareTask() {
             return;
         }
         else if (result.error == "User who this was shared to not found") {
-            setError("Kasutaja, kellega ülesannet jagada ei leitud andmebaasist");
+            setError("Kasutaja, kellega ülesannet jagad aei leitud andmebaasist");
             return;
         } 
         else if (result.error == "User to share with cant be same as the user who wants to share") {
-            setError("Kasutaja, kellega ülesannet jagada ei tohi olla sina ise");
+            setError("Kasutaja, kellega ülesannet jagada ei tohi olla ülesande omanik");
             return;
         }
         else if (result.error == "Task already shared with this user") {

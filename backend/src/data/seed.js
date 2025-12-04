@@ -11,7 +11,7 @@ export default async (db) => {
         where: { username: "Tormi" },
         defaults: {
             username: "Tormi",
-            password: "$2b$10$XAfZIvRHT6drLqZ7JiGMwOBnbuTMg67BSm.2EJNOA1evILtnWu2i."
+            password: "$2b$10$Xi4FCzwU55BXuOPO3Y14NOJatQxoV.QvMkgKKHM3JZJqAhxIkiDFC"
         }
     });
     console.log("Tormi created", tormiCreated)
@@ -19,7 +19,7 @@ export default async (db) => {
         where: { username: "Tormi2" },
         defaults: {
             username: "Tormi2",
-            password: "$2b$10$XAfZIvRHT6drLqZ7JiGMwOBnbuTMg67BSm.2EJNOA1evILtnWu2i."
+            password: "$2b$10$Xi4FCzwU55BXuOPO3Y14NOJatQxoV.QvMkgKKHM3JZJqAhxIkiDFC"
         }
     });
     console.log("Tormi2 created", tormiCreated2)

@@ -41,18 +41,23 @@ function UpdateTask() {
     const storedUsername = localStorage.getItem('username');
     const storedTaskToUpdate = localStorage.getItem('taskToUpdate');
     if (!storedUsername) {
-      setError("Sa ei saa luua ülesannet, sest pole sisse logitud!");
+      setError("Sa ei saa uuendada ülesannet, sest pole sisse logitud!");
       return;
     }
     if (!storedTaskToUpdate) {
       setError("Sa ei vajutanud ülesande uuendamise nuppu siia lehel tulles!");
       return;
     }
+    const storedTaskOwner = localStorage.getItem('taskToUpdateOwner');
+    if (!storedTaskOwner) {
+      setError("Sa ei saa uuendada ülesannet, sest pole mälus ülesande omanikku!");
+      return;
+    }
     if (!title || !description) {
       setError("Tiitel või kirjeldus on puudu!");
       return;
     }
-    tryUpdateTask(storedTaskToUpdate, storedUsername, title, description, deadline).then((result) => {
+    tryUpdateTask(storedTaskToUpdate, storedTaskOwner, title, description, deadline).then((result) => {
       if (result.error) {
         if (result.error == "Missing required fields: title / description / username") {
             setError("Tiitel või kirjeldus on puudu");
