@@ -4,7 +4,7 @@ import axios from "axios";
 import "./auth.css";
 async function tryRegister(username, password){
     try {
-        const response = (await axios.post(import.meta.env.VITE_BACKEND_URL + "/api/v1/users",{ username, password }));
+        const response = (await axios.post("/api/v1/users",{ username, password }));
         return response.status;
       } catch (error) {
         if (error.response) {
@@ -23,47 +23,47 @@ function Register() {
     e.preventDefault();
     setError("");
     if (!username || !password) {
-      setError("Both fields are required!");
+      setError("Täida mõlemad väljad!");
       return;
     }
     tryRegister(username, password).then((result) => {
       if(result === 409){
-        setError("User already exists");
+        setError("Kasutajanimi on juba võetud");
         return;
       }
       if(result === 400){
-        setError("Missing username or password");
+        setError("Kasuja või parool puudub");
         return;
       }
       if(result === 500){
-        setError("Server error. Please try again later.");
+        setError("Serveri viga. Proovi hiljem uuesti.");
         return;
       }
       localStorage.setItem("username",username);
       window.dispatchEvent(new Event("storage"));
-      confirm("Register successful!");
+      confirm("Registreerimine õnnestus!");
       navigate("/");
     });
   };
 
   return (
     <div className="container">
-      <h2>Register</h2>
+      <h2>Registeeri</h2>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          placeholder="Username"
+          placeholder="Kasutajanimi"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
         <input
           type="password"
-          placeholder="Password"
+          placeholder="Parool"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
         {error && <p className="error">{error}</p>}
-        <button type="submit">Register</button>
+        <button type="submit">Registeeri</button>
       </form>
     </div>
   );

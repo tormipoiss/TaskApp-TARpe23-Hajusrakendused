@@ -6,7 +6,7 @@ export default function TaskRow({task}) {
 
   const fetchTaskDescription = async () => {
     try { 
-      const response = await axios.get(import.meta.env.VITE_BACKEND_URL + `/api/v1/tasks/${task.id}`);
+      const response = await axios.get(`/api/v1/tasks/${task.id}`);
       return response.data.description;
     } catch (error) {
       console.log("Failed to fetch task:", error);

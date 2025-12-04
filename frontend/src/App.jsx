@@ -4,6 +4,7 @@ import Login from './components/auth/login.jsx';
 import Register from './components/auth/register.jsx';
 import CreateTask from './components/task/createTask.jsx';
 import UpdateTask from './components/task/updateTask.jsx';
+import Profile from './components/profile/profileModal.jsx';
 import {
   BrowserRouter,
   Routes,
@@ -21,7 +22,7 @@ function Logout() {
     localStorage.removeItem("username");
     // re-render
     window.dispatchEvent(new Event("storage"));
-    alert("Logged out successfully!");
+    alert("Väljalogimine õnnestus!");
     navigate("/login", { replace: true });
   }, [navigate]);
 
@@ -52,21 +53,22 @@ function App() {
     <BrowserRouter>
       <nav style={{ padding: '1rem', background: '#f4f4f4', marginBottom: '2rem', display: 'flex', justifyContent: 'space-between' }}>
         <div>
-          <Link to="/" style={{ fontWeight: 'bold' }}>Home</Link>
+          <Link to="/" style={{ fontWeight: 'bold' }}>Kodu</Link>
         </div>
 
         <div>
           {username ? (
             <>
               <span style={{ marginRight: '1rem', color: "black" }}>
-                Hello, <strong>{username}</strong>
+                Tere, <strong>{username}</strong>
               </span>
-              <Link to="/logout" style={{ color: '#d32f2f' }}>Logout</Link>
+              <Link to="/profile" style={{ color: '#003cffff', marginRight:'0.5rem' }}>Profile</Link>
+              <Link to="/logout" style={{ color: '#d32f2f' }}>Logi välja</Link>
             </>
           ) : (
             <>
-              <Link to="/login" style={{ marginRight: '1rem' }}>Login</Link>
-              <Link to="/register">Register</Link>
+              <Link to="/login" style={{ marginRight: '1rem' }}>Logi sisse</Link>
+              <Link to="/register">Registeeri</Link>
             </>
           )}
         </div>
@@ -86,6 +88,7 @@ function App() {
         <Route path="/logout" element={<Logout />} />
         <Route path="/createTask" element={<CreateTask />} />
         <Route path="/updateTask" element={<UpdateTask />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
