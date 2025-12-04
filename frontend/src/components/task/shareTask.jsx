@@ -195,18 +195,26 @@ function ShareTask() {
     <div className="container">
       <h2>Jaga ülesanne</h2>
       <form onSubmit={(e) => e.preventDefault()}>
-        <span>Kasutaja: </span>
-        <select
-          value={userToShareWith}
-          onChange={(e) => setUserToShareWith(e.target.value)}
-        >
-          <option value="" disabled>Vali kasutaja...</option>
-          {users.map((user) => (
-            <option key={user} value={user}>{user}</option>
-          ))}
-        </select>
-        <br />
-        {error && <p className="error">{error}</p>}
+        <div className="select-container-centered">
+          <label className="select-label" htmlFor="selectInput">Kasutaja:</label>
+          
+          <div className="select-wrapper">
+            <select
+              className="custom-select"
+              id="selectInput"
+              value={userToShareWith}
+              onChange={(e) => setUserToShareWith(e.target.value)}
+            >
+              <option value="" disabled>Vali kasutaja...</option>
+              {users.map((user) => (
+                <option key={user} value={user}>{user}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Error is absolute or inside the block so it doesn't shift center */}
+          {error && <p className="error-text">{error}</p>}
+        </div>
         
         {/* Button 1: Share */}
         <button 

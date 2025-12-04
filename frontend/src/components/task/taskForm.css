@@ -238,3 +238,85 @@ button {
 body.modal-open {
   overflow: hidden;
 }
+
+.select-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-width: 350px; /* Controls the width of the whole block */
+}
+
+.select-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151; /* Dark gray text */
+}
+
+/* Wrapper to handle the custom arrow positioning */
+.select-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 300px; /* Limit width if desired */
+}
+
+/* The actual select element */
+.custom-select {
+  width: 100%;
+  padding: 10px 12px;
+  padding-right: 36px; /* Space for the arrow */
+  font-size: 16px;
+  color: #1f2937;
+  background-color: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  cursor: pointer;
+  outline: none;
+  appearance: none; /* Removes default system arrow */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+
+  /* Custom SVG Arrow Icon */
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 10px center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+}
+
+/* Hover state */
+.custom-select:hover {
+  border-color: #9ca3af;
+}
+
+/* Focus state */
+.custom-select:focus {
+  border-color: #3b82f6; /* Blue border */
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); /* Soft blue glow */
+}
+
+/* Disabled placeholder text color (optional) */
+.custom-select option[disabled] {
+  color: #9ca3af;
+}
+
+.select-container-centered {
+  /* 1. Lock the width so it doesn't dance around */
+  width: 100%; 
+  max-width: 300px; /* Or whatever size you like */
+  
+  /* 2. Center the Block itself */
+  margin: 0 auto 16px auto; /* Top, Right, Bottom, Left */
+  
+  /* 3. Internal Alignment */
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left; /* Keeps label/input left-aligned inside the centered box */
+}
+
+.error-text {
+  color: #d32f2f;
+  font-size: 0.85rem;
+  min-height: 20px; /* Optional: Reserves space so UI doesn't jump vertically */
+}
