@@ -8,13 +8,26 @@ import {
 export default function TasksTable() {
   const [tasks, setTasks] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedTaskId, setSelectedTaskId] = useState(null);
   const [filteredTasksSorted, setFilteredTasksSorted] = useState([]);
   const navigate = useNavigate();
+  const [modal, setModal] = useState({
+        show: false,
+        message: "",
+        isSuccess: false,
+      });
+  const closeModal = () => {
+        setModal({ 
+          show: false, 
+          message: ""
+        });
+        navigate('/');
+      };
 
   useEffect(() => {
     const fetchTasks = async () => {
       try { 
-        const response = (await axios.get(`/api/v1/tasks/getbyuser/${localStorage.getItem('username')}`));
+        const response = (await axios.get(import.meta.env.VITE_BACKEND_URL + `/api/v1/tasks/getbyuser/${localStorage.getItem('username')}`));
         setTasks(response.data);
       } catch (error) {
         console.log("Failed to fetch tasks:", error);
@@ -39,9 +52,33 @@ export default function TasksTable() {
     setFilteredTasksSorted(sorted);
   }, [tasks, searchTerm]);  // Re-run when tasks or search change
 
-  const handleDeleteTask = (taskId) => {
-    setFilteredTasksSorted(prev => prev.filter(task => task.id != taskId));
+  const deleteTask = async () => {
+    try { 
+      const response = await axios.delete(import.meta.env.VITE_BACKEND_URL + `/api/v1/tasks/${selectedTaskId}`);
+      return response.data.description;
+    } catch (error) {
+      console.log("Failed to fetch task:", error);
+      return null; // Return fallback
+    }
+  };
+
+  const confirmDeleteTask = async () => {
+    await deleteTask();
     localStorage.removeItem('taskToDelete');
+    setFilteredTasksSorted(prev => prev.filter(task => task.id != selectedTaskId));
+    setModal({
+          show: true,
+          message: "Ülesanne edukalt kustutatud!",
+          isSuccess: true,
+        });
+  }
+  const handleDeleteTask = (taskId) => {
+    setModal({
+          show: true,
+          message: "Kas soovid seda ülesannet kustutada?",
+          isSuccess: false,
+        });
+    setSelectedTaskId(taskId);
   };
 
   // ✅ Move event listener to useEffect with cleanup
@@ -123,6 +160,7 @@ export default function TasksTable() {
         <thead>
           <tr>
             <th>Ülesanne</th>
+            <th>Tähtaeg</th>
             <th>Juhtnupud</th>
           </tr>
         </thead>
@@ -132,6 +170,36 @@ export default function TasksTable() {
           ))}
         </tbody>
       </table>
+      {modal.show && (
+  <div className="modal-overlay" onClick={closeModal}>
+    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+      
+      {modal.isSuccess ? (
+        <>
+          <h3 className="modal-title modal-success">Ok</h3>
+          <p className="modal-success">{modal.message}</p>
+          <button className="modal-btn modal-close-btn" onClick={closeModal}>
+            Sulge
+          </button>
+        </>
+      ) : (
+        <>
+          <h3 className="modal-title">Kustuta ülesanne ära?</h3>
+          <p className="modal-title">{modal.message}</p>
+          <div className="confirm-buttons">
+            <button className="modal-btn cancel-btn" onClick={closeModal}>
+              Tühista
+            </button>
+            <button className="modal-btn confirm-delete-btn" onClick={confirmDeleteTask}>
+              Jah, kustuta ära
+            </button>
+          </div>
+        </>
+      )}
+      
+    </div>
+  </div>
+)}
     </>
   );
 }

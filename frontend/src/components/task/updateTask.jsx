@@ -4,7 +4,7 @@ import axios from "axios";
 import "./taskForm.css";
 async function tryUpdateTask(id, username, title, description, deadline){
     try {
-        const response = (await axios.put(`/api/v1/tasks/${id}`,{ username, title, description, deadline }));
+        const response = (await axios.put(import.meta.env.VITE_BACKEND_URL + `/api/v1/tasks/${id}`,{ username, title, description, deadline }));
         return response;
     } catch (error) {
     if (error.response?.data?.error) {
@@ -20,6 +20,17 @@ function UpdateTask() {
   const [deadline, setDeadline] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+    const [modal, setModal] = useState({
+      show: false,
+      message: "",
+    });
+    const closeModal = () => {
+      setModal({ 
+        show: false, 
+        message: ""
+      });
+      navigate('/');
+    };
 
   useEffect(() => {
     const storedTitle = localStorage.getItem('taskToUpdateTitle');
@@ -70,8 +81,12 @@ function UpdateTask() {
       }
       else {
         // window.dispatchEvent(new Event("storage"));
-        confirm("Ülesanne edukalt uuendatud!");
-        navigate("/");
+        //confirm("Ülesanne edukalt uuendatud!");
+        //navigate("/");
+        setModal({
+          show: true,
+          message: "Ülesanne edukalt uuendatud!"
+        });
       }
     });
   };
@@ -106,6 +121,21 @@ function UpdateTask() {
         {error && <p className="error">{error}</p>}
         <button type="submit">Uuenda ülesanne</button>
       </form>
+      {modal.show && (
+        <>
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3 className="modal-title modal-success">Ok</h3>
+            <p className="modal-success">
+              {modal.message}
+            </p>
+            <button className="modal-close-btn" onClick={closeModal}>
+              Sulge
+            </button>
+          </div>
+        </div>
+        </>
+      )}
     </div>
   );
 }
