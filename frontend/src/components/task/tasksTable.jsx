@@ -16,9 +16,6 @@ export default function TasksTable() {
       try { 
         const response = (await axios.get(`/api/v1/tasks/getbyuser/${localStorage.getItem('username')}`));
         setTasks(response.data);
-        const response = (await axios.get(`/api/v1/tasks/getbyuser/${localStorage.getItem('username')}`));
-        const fetchedTasks = response.data
-        setTasks(fetchedTasks);
       } catch (error) {
         console.log("Failed to fetch tasks:", error);
       }
