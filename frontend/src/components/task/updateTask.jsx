@@ -4,7 +4,7 @@ import axios from "axios";
 import "./taskForm.css";
 async function tryUpdateTask(id, username, title, description, deadline){
     try {
-        const response = (await axios.put(import.meta.env.VITE_BACKEND_URL + `/api/v1/tasks/${id}`,{ username, title, description, deadline }));
+        const response = (await axios.put(`/api/v1/tasks/${id}`,{ username, title, description, deadline }));
         return response;
     } catch (error) {
     if (error.response?.data?.error) {

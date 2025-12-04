@@ -27,7 +27,7 @@ export default function TasksTable() {
   useEffect(() => {
     const fetchTasks = async () => {
       try { 
-        const response = (await axios.get(import.meta.env.VITE_BACKEND_URL + `/api/v1/tasks/getbyuser/${localStorage.getItem('username')}`));
+        const response = (await axios.get(`/api/v1/tasks/getbyuser/${localStorage.getItem('username')}`));
         setTasks(response.data);
       } catch (error) {
         console.log("Failed to fetch tasks:", error);
@@ -54,7 +54,7 @@ export default function TasksTable() {
 
   const deleteTask = async () => {
     try { 
-      const response = await axios.delete(import.meta.env.VITE_BACKEND_URL + `/api/v1/tasks/${selectedTaskId}`);
+      const response = await axios.delete(`/api/v1/tasks/${selectedTaskId}`);
       return response.data.description;
     } catch (error) {
       console.log("Failed to fetch task:", error);

@@ -5,7 +5,7 @@ import "./taskForm.css";
 
 async function tryShareTask(taskOwner, taskId, sharedWith) {
     try {
-        const response = (await axios.post(import.meta.env.VITE_BACKEND_URL + "/api/v1/shares",{ taskOwner, taskId, sharedWith }));
+        const response = (await axios.post("/api/v1/shares",{ taskOwner, taskId, sharedWith }));
         return response;
     } catch (error) {
     if (error.response?.data?.error) {
@@ -36,7 +36,7 @@ async function tryDeleteShare(taskId, sharedWith) {
 
 async function tryGetUsers() {
     try {
-        const response = await axios.get(import.meta.env.VITE_BACKEND_URL + "/api/v1/users");
+        const response = await axios.get("/api/v1/users");
         const userStrings = response.data.map(user => user.username);
         return userStrings;
     } catch (error) {

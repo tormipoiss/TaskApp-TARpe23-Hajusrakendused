@@ -4,7 +4,7 @@ import axios from "axios";
 import "./taskForm.css";
 async function tryCreateTask(username, title, description, deadline){
     try {
-        const response = (await axios.post(import.meta.env.VITE_BACKEND_URL + "/api/v1/tasks",{ username, title, description, deadline }));
+        const response = (await axios.post("/api/v1/tasks",{ username, title, description, deadline }));
         return response;
     } catch (error) {
     if (error.response?.data?.error) {
