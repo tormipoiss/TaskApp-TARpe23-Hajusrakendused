@@ -93,7 +93,7 @@ export default function TaskRow({task}) {
           Kustuta
         </button>
         <button className="share-btn" onClick={handleShare}>
-          Jaga
+          Jaga või eemalda jagamist
         </button>
       </td>
     </tr>

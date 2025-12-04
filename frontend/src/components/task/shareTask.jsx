@@ -16,6 +16,24 @@ async function tryShareTask(taskOwner, taskId, sharedWith) {
     }
 }
 
+async function tryDeleteShare(taskId, sharedWith) {
+    try {
+        const response = await axios.delete(
+            import.meta.env.VITE_BACKEND_URL + `/api/v1/shares/${taskId}`,
+            { 
+                data: { sharedWith: sharedWith } // <--- Wrap it in 'data'
+            }
+        );
+        return response;
+    } catch (error) {
+    if (error.response?.data?.error) {
+        return { status: error.response.status, error: error.response.data.error };
+    }
+    console.log("Failed to delete share:", error);
+    return { status: 500, error: "Server error. Please try again later." };
+    }
+}
+
 async function tryGetUsers() {
     try {
         const response = await axios.get(import.meta.env.VITE_BACKEND_URL + "/api/v1/users");
@@ -59,7 +77,7 @@ function ShareTask() {
     });
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleShare = async (e) => {
     e.preventDefault();
     setError("");
     const storedUsername = localStorage.getItem('username');
@@ -97,7 +115,7 @@ function ShareTask() {
             return;
         }
         else if (result.error == "User who this was shared to not found") {
-            setError("Kasutaja, kellega ülesannet jagad aei leitud andmebaasist");
+            setError("Kasutaja, kellega ülesannet jagad ei leitud andmebaasist");
             return;
         } 
         else if (result.error == "User to share with cant be same as the user who wants to share") {
@@ -123,28 +141,89 @@ function ShareTask() {
     });
   };
 
+  const handleUnshare = async (e) => {
+    e.preventDefault();
+    setError("");
+    const storedUsername = localStorage.getItem('username');
+    if (!storedUsername) {
+      setError("Sa ei saa eemaldada jagamist, sest pole sisse logitud!");
+      return;
+    }
+    const storedTaskID = localStorage.getItem('taskToShare');
+    if (!storedTaskID) {
+      setError("Sa ei saa eemaldada jagamist, sest ei leitud ülesannet millest jagamist eemaldada!");
+      return;
+    }
+    if (!userToShareWith) {
+      setError("Kasutaja kellelt jagamist eemaldada on puudu!");
+      return;
+    }
+    tryDeleteShare(storedTaskID, userToShareWith).then((result) => {
+      if (result.error) {
+        if (result.error == "URL does not contain task ID") {
+            setError("Puudub ülesande ID");
+            return;
+        }
+        else if (result.error == "Missing required fields: sharedWith") {
+            setError("Puudub kasutaja, kellelt jagamist eemaldada");
+            return;
+        }
+        else if (result.error == "User who this was shared to not found") {
+            setError("Ei leitud andmebaasist kasutajat, kellelt tahad jagamist eemaldada");
+            return;
+        }
+        else if (result.error == "Share not found") {
+            setError("Ei leitud andmebaasist jagamist sellele kasutajale sellel ülesandel");
+            return;
+        } 
+        else {
+            console.log("Serveri error:", error)
+            setError("Tundmatu serveri error");
+            return;
+        }
+      }
+      else {
+        setModal({
+          show: true,
+          message: `Ülesande jagamine edukalt eemaldatud kasutajalt: ${userToShareWith}`
+        });
+      }
+    });
+  };
+
   return (
     <div className="container">
       <h2>Jaga ülesanne</h2>
-      <form onSubmit={handleSubmit}>
-        <span>Kasutaja, kellega jagada: </span>
+      <form onSubmit={(e) => e.preventDefault()}>
+        <span>Kasutaja: </span>
         <select
           value={userToShareWith}
-          onChange={(e) => setUserToShareWith(e.target.value)}>
-
-          {/* Default "placeholder" option */}
+          onChange={(e) => setUserToShareWith(e.target.value)}
+        >
           <option value="" disabled>Vali kasutaja...</option>
-          
-          {/* Map over your users array */}
           {users.map((user) => (
-            <option key={user} value={user}>
-              {user} 
-            </option>
+            <option key={user} value={user}>{user}</option>
           ))}
         </select>
         <br />
         {error && <p className="error">{error}</p>}
-        <button type="submit">Jaga ülesanne</button>
+        
+        {/* Button 1: Share */}
+        <button 
+            type="submit" 
+            onClick={handleShare} // Different handler
+        >
+            Jaga ülesanne
+        </button>
+
+        {/* Button 2: Remove Share */}
+        <button 
+            type="submit" 
+            onClick={handleUnshare} // Different handler
+            className="remove-btn" // Optional: Add styling to look red/dangerous
+        >
+            Eemalda jagamine
+        </button>
       </form>
       {modal.show && (
         <>
