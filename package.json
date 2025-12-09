@@ -7,7 +7,7 @@
     "postinstall": "subpkg install",
     "dev": "concurrently \"cd frontend && npm run dev\" \"cd backend && npm start\"",
     "start": "concurrently \"cd frontend && npm run build\" \"cd backend && npm start\"",
-    "dep-pre": "for %I in (\"frontend\\node_modules\" \"frontend\\dist\" \"backend\\node_modules\" \"backend\\database.sqlite\" \".\\node_modules\") do @(if \"%~nI%\"==\"database.sqlite\" (del /F /Q %I 2>nul) else (rmdir /S /Q %I 2>nul))"  
+    "dep-pre": "for %I in (\"frontend\\node_modules\" \"frontend\\dist\" \"backend\\node_modules\" \"backend\\database.sqlite\" \".\\node_modules\") do @(if \"%~nxI\"==\"database.sqlite\" (del /F /Q %I 2>nul) else (rmdir /S /Q %I 2>nul))"
   },
   "devDependencies": {
     "concurrently": "^8.2.2",
