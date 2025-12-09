@@ -47,3 +47,8 @@ Lõpetamiseks vajuta klahve CTRL+C
 16. Parem klõps sinu loodud service peal
 17. Klikka "**Browse Website**"
 18. Nüüd peaks projekt olema evitatud Azure keskkonnas
+
+## Azure Probleemide lahendus
+1. Andmebaas ei töötanud, pidi selle ära kustutama
+2. Deploy ei töödanud kuna node_modules eksisteeris, selle pidi ära kustutama
+3. Ressurssi asukoha probleem, Azure veebi keskkonnas pidi vaatama "recommended locations"
