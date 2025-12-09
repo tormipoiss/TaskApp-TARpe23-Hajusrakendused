@@ -52,11 +52,15 @@ Lõpetamiseks vajuta klahve CTRL+C
 11. Oota kuni service on loodud
 12. Parem klõpsa loodud service peal
 13. Klikka "**Deploy to Web App**"
+![alt text]({1F7D59DB-721E-4EB4-A717-A633F6816E11}.png)
 14. Vali ülevalt aknast taskapp repo
+![alt text]({EF2359C7-5876-4D26-808A-56DDCE7078C6}.png)
 15. Oota kuni see on evitatud ja valmis ehitatud, **see võtab natukene aega (2-10 minutit)**
 16. Parem klõps sinu loodud service peal
 17. Klikka "**Browse Website**"
+![alt text]({7D6A84B8-E896-4804-9C56-5EC34E4960CF}.png)
 18. Nüüd peaks projekt olema evitatud Azure keskkonnas
+![alt text]({B077E074-0EF4-4356-A43A-7FF2BEC9E3A9}.png)
 
 ## Azure Probleemide lahendus
 1. Andmebaas ei töötanud, pidi selle ära kustutama

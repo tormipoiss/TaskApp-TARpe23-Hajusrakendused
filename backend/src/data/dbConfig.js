@@ -5,38 +5,28 @@ import SharingModel from "./models/SharingModel.js";
 import relations from "./models/relations.js";
 import seed from "./seed.js";
 import dotenv from 'dotenv';
+import path from 'path';
 dotenv.config();
 
 // Determine if we're in test mode
 const isTest = process.env.NODE_ENV === 'test';
 console.log("isTest:",isTest)
 
-// Create the appropriate Sequelize instance based on the environment
-const sequelize = isTest
-  ? new Sequelize({
-      dialect: 'sqlite',
-      storage: ':memory:', // Use in-memory SQLite for tests
-      logging: false,
-      define: {
-        defaultScope: {
-          attributes: {
-            exclude: [ 'createdAt', 'updatedAt' ]
-          }
-        } 
-      }
-    })
-  : new Sequelize({
-      dialect: 'sqlite',
-      storage: `./${process.env.DB_FILE}`, // Use file-based SQLite for production
-      logging: false,
-      define: {
-        defaultScope: {
-          attributes: {
-            exclude: [ 'createdAt', 'updatedAt' ]
-          }
-        } 
-      }
-    });
+const storagePath = isTest
+  ? ':memory:'
+  : path.join('/tmp', process.env.DB_FILE || 'database.sqlite');
+
+const sequelize = new Sequelize({
+  dialect: 'sqlite',
+  storage: storagePath,
+  logging: false,
+  define: {
+    timestamps: true,
+    defaultScope: {
+      attributes: { exclude: ['createdAt', 'updatedAt'] }
+    }
+  }
+});
 
 (async () => {
   try {
