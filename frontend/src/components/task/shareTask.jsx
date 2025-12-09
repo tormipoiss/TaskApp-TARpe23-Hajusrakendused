@@ -19,7 +19,7 @@ async function tryShareTask(taskOwner, taskId, sharedWith) {
 async function tryDeleteShare(taskId, sharedWith) {
     try {
         const response = await axios.delete(
-            import.meta.env.VITE_BACKEND_URL + `/api/v1/shares/${taskId}`,
+            `/api/v1/shares/${taskId}`,
             { 
                 data: { sharedWith: sharedWith } // <--- Wrap it in 'data'
             }
