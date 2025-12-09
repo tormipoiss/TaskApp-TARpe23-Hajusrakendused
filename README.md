@@ -29,16 +29,26 @@ Projekt töötab ja kuvab veebilehed, millelt saab lehte külastada.
 Lõpetamiseks vajuta klahve CTRL+C
 
 ## Azure Evitus
-1. **Tee kindlaks, et .env.example on nimetatud ringi .env'iks**
+1. **Tee kindlaks, et .env.example on nimetatud ringi .env'iks <br>(Frontend ja backend kaustades)<br>**
+![alt text](image-1.png)
 2. Käivita käsklus "**npm run dep-pre**", et puhastada repo.
+![alt text](image-2.png)
 3. Installi "**Azure App Service**" plugin Visual Studio Code's
+![alt text](image-3.png)
 4. Logi enda kontoga sisse
+![alt text](image-4.png)
 5. Parem klõpsa "**App Services**"
+![alt text](image-5.png)
 6. Vali "**Create New Web App**"
-7. Vali ressursi asukoht 
+![alt text](image-6.png)
+7. Vali ressursi asukoht (Soovitan "Recommended" asukohta)
+![alt text](image-7.png)
 8. Pane unikaalne nimi "taskapp" või midagi muud
+![alt text](image-8.png)
 9. Vali "**Node 24 LTS**" runtime stack
+![alt text](image-9.png)
 10. Vali "**Free**" või "**Basic**"
+![alt text](image-10.png)
 11. Oota kuni service on loodud
 12. Parem klõpsa loodud service peal
 13. Klikka "**Deploy to Web App**"
